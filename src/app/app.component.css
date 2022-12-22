@@ -1,3 +1,5 @@
-p {
-  font-family: Lato;
+.main-page {
+  margin: 4px;
+  width: calc(100vw - 8px);
+  height: calc(100vh - 60px);
 }
