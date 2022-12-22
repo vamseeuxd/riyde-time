@@ -9,6 +9,7 @@ import { MyAccountComponent } from './my-account/my-account.component';
 import { SupportComponent } from './support/support.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
+import { ManageCarsComponent } from './manage-cars/manage-cars.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'coming-soon', pathMatch: 'full' },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'account', component: MyAccountComponent },
   { path: 'support', component: SupportComponent },
   { path: 'coming-soon', component: ComingSoonComponent },
+  { path: 'manage-cars', component: ManageCarsComponent },
 ];
 
 @NgModule({
@@ -31,6 +33,7 @@ export const routes: Routes = [
     DashboardComponent,
     MyAccountComponent,
     SupportComponent,
+    ManageCarsComponent,
   ],
   bootstrap: [AppComponent],
 })
