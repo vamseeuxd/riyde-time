@@ -21,7 +21,7 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "styles.scss"
+              "src/styles.css"
             ],
             "scripts": []
           },
@@ -69,7 +69,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": [],
+            "styles": ["styles.css"],
             "scripts": [],
             "assets": ["src/favicon.ico", "src/assets"]
           }
