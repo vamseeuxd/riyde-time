@@ -1,0 +1,81 @@
+<h4 class="text-danger d-flex border-bottom border-danger pb-2 mt-2 mx-2">
+  Manage Cars
+  <button
+    (click)="open(addNewCar)"
+    class="btn btn-outline-danger btn-sm ms-auto"
+  >
+    ADD
+  </button>
+</h4>
+
+<ul class="list-group">
+  <li
+    *ngFor="let car of cars"
+    class="list-group-item d-flex mb-2 border rounded-0 shadow-sm"
+  >
+    <div>
+      <label>{{ car.name }}</label>
+    </div>
+    <div class="ms-auto">
+      <button class="btn btn-danger btn-sm shadow">
+        <i class="fa fa-trash"></i>
+      </button>
+      <button
+        (click)="open(addNewCar, true)"
+        class="btn btn-warning btn-sm ms-3 shadow"
+      >
+        <i class="fa fa-edit"></i>
+      </button>
+    </div>
+  </li>
+</ul>
+
+<ng-template #addNewCar let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ isEdit ? 'Edit' : 'Add New' }} Car</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <label class="form-label">Car Brand</label>
+      <input
+        ngbAutofocus
+        type="email"
+        class="form-control"
+        placeholder="Car Brand"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Car Model</label>
+      <input type="email" class="form-control" placeholder="Car Brand" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Car Registration Number</label>
+      <input
+        type="email"
+        class="form-control"
+        placeholder="Car Registration Number"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Car Picture</label>
+      <input class="form-control" type="file" id="formFile" />
+    </div>
+    <div class="modal-footer px-0">
+      <div class="d-flex justify-content-between w-100">
+        <button
+          (click)="modal.dismiss('Cross click')"
+          class="btn shadow btn-dark w-50 me-2"
+        >
+          Cancel
+        </button>
+        <button class="btn shadow btn-danger w-50 ms-2">Save</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
