@@ -1,27 +1,77 @@
 <nav class="navbar bg-danger navbar-dark shadow">
   <div class="container-fluid">
     <span class="navbar-brand fw-bold mb-0 h1">
+      <span (click)="open(content)" role="button" class="text-light me-3"
+        ><i class="fa fa-bars"></i
+      ></span>
       <span class="text-dark me-2">RIYDE</span>
       <span class="text-light">TIME</span>
     </span>
   </div>
 </nav>
 <div class="container-fluid">
-  <div
-    class="
-      d-flex
-      flex-column
-      border
-      shadow
-      align-items-center
-      justify-content-center
-      mt-3
-    "
-    style="height:calc(100vh - 80px)"
-  >
-    <h4 class="text-danger text-center m-0 p-0">
-      <app-logo></app-logo>
-    </h4>
-    <h4 class="text-danger text-center m-0 p-0">🚗🚗🚗Comming Soon...🚗🚗🚗</h4>
-  </div>
+  <router-outlet></router-outlet>
 </div>
+
+<ng-template #content let-offcanvas>
+  <div class="offcanvas-header pb-0">
+    <h4 class="offcanvas-title w-100 text-center" id="offcanvas-basic-title">
+      <app-logo style="width:150px" class="d-inline-block"></app-logo>
+    </h4>
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-danger border-0"
+      aria-label="Close"
+      (click)="offcanvas.dismiss('Cross click')"
+    >
+      <i class="fa fa-close"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="list-group">
+      <li
+        role="button"
+        routerLink="/coming-soon"
+        routerLinkActive="bg-danger text-light"
+        (click)="offcanvas.dismiss('Cross click')"
+        class="list-group-item"
+      >
+        Comming Soon
+      </li>
+      <li
+        role="button"
+        routerLink="/dashboard"
+        routerLinkActive="bg-danger text-light"
+        (click)="offcanvas.dismiss('Cross click')"
+        class="list-group-item"
+      >
+        Dashboard
+      </li>
+      <li
+        role="button"
+        routerLink="/account"
+        routerLinkActive="bg-danger text-light"
+        (click)="offcanvas.dismiss('Cross click')"
+        class="list-group-item"
+      >
+        My-Account
+      </li>
+      <li
+        role="button"
+        routerLink="/support"
+        routerLinkActive="bg-danger text-light"
+        (click)="offcanvas.dismiss('Cross click')"
+        class="list-group-item"
+      >
+        Support
+      </li>
+      <li
+        role="button"
+        (click)="offcanvas.dismiss('Cross click')"
+        class="list-group-item"
+      >
+        Logout
+      </li>
+    </ul>
+  </div>
+</ng-template>
