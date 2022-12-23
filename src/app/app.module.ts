@@ -11,6 +11,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { ManageCarsComponent } from './manage-cars/manage-cars.component';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastsComponent } from './toasts/toasts.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'coming-soon', pathMatch: 'full' },
@@ -36,6 +37,7 @@ export const routes: Routes = [
     MyAccountComponent,
     SupportComponent,
     ManageCarsComponent,
+    ToastsComponent,
   ],
   bootstrap: [AppComponent],
 })
