@@ -10,6 +10,7 @@ import { SupportComponent } from './support/support.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { ManageCarsComponent } from './manage-cars/manage-cars.component';
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'coming-soon', pathMatch: 'full' },
@@ -24,6 +25,7 @@ export const routes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    NgbToastModule,
     RouterModule.forRoot(routes, { useHash: true }),
   ],
   declarations: [
