@@ -5,6 +5,7 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs';
+import { ToastService } from '../toasts/toasts.service';
 
 export interface ICar {
   id: string;
@@ -17,7 +18,7 @@ export interface ICar {
   styleUrls: ['./manage-cars.component.scss'],
 })
 export class ManageCarsComponent implements OnInit {
-  mockCars: ICar[] = Array.from(Array(50).keys()).map((key) => {
+  mockCars: ICar[] = Array.from(Array(10).keys()).map((key) => {
     return {
       name: 'Car-' + key,
       id: '' + key,
@@ -31,7 +32,11 @@ export class ManageCarsComponent implements OnInit {
 
   activeCar: ICar = { id: '', name: '' };
 
-  constructor(config: NgbModalConfig, private modalService: NgbModal) {
+  constructor(
+    config: NgbModalConfig,
+    private modalService: NgbModal,
+    public toastService: ToastService
+  ) {
     // customize default values of modals used by this component tree
     config.backdrop = 'static';
     config.keyboard = false;
@@ -63,5 +68,9 @@ export class ManageCarsComponent implements OnInit {
     this.carsAction.next(
       this.carsAction.value.filter((car) => car.id !== this.activeCar.id)
     );
+    this.toastService.show(this.activeCar.name + ' Deleted Successfully.', {
+      classname: 'bg-success text-light',
+      delay: 2000,
+    });
   }
 }
