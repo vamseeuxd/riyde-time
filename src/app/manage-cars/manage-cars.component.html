@@ -24,24 +24,45 @@
     <ul class="cars list-group" *ngIf="cars$ | async as cars">
       <li
         *ngFor="let car of cars; trackBy: identify"
-        class="list-group-item d-flex mb-1 border rounded-0 shadow-sm"
+        class="
+          list-group-item
+          d-flex
+          align-items-center
+          mb-1
+          border
+          rounded-0
+          shadow-sm
+        "
       >
-        <div>
-          <label>{{ car.name }}</label>
+        <div class="w-100">
+          <label class="w-100 mb-1">{{ car.name }}</label>
+          <div class="w-100">
+            <label class="badge fw-normal text-bg-primary me-2">{{
+              car.brand
+            }}</label>
+            <label class="badge fw-normal text-bg-danger me-2">{{
+              car.model
+            }}</label>
+            <label class="badge fw-normal text-bg-success me-2">{{
+              car.registrationNumber
+            }}</label>
+          </div>
         </div>
         <div class="ms-auto">
-          <button
-            class="btn btn-danger btn-sm shadow"
-            (click)="open(deleteConfirmation, false, 'sm', true, car)"
-          >
-            <i class="fa fa-trash"></i>
-          </button>
-          <button
-            (click)="open(addNewCar, true)"
-            class="btn btn-warning btn-sm ms-3 shadow"
-          >
-            <i class="fa fa-edit"></i>
-          </button>
+          <div class="d-flex flex-row">
+            <button
+              class="btn btn-danger btn-sm shadow"
+              (click)="open(deleteConfirmation, false, 'sm', true, car)"
+            >
+              <i class="fa fa-trash"></i>
+            </button>
+            <button
+              (click)="open(addNewCar, true, '', true, car)"
+              class="btn btn-warning btn-sm ms-3 shadow"
+            >
+              <i class="fa fa-edit"></i>
+            </button>
+          </div>
         </div>
       </li>
     </ul>
@@ -92,30 +113,50 @@
   </div>
   <div class="modal-body">
     <div class="mb-3">
-      <label class="form-label">Car Brand</label>
+      <label class="form-label">Car Title</label>
       <input
         ngbAutofocus
         type="text"
+        name="name"
         class="form-control"
+        [(ngModel)]="activeCar.name"
+        placeholder="Car Title"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Car Brand</label>
+      <input
+        name="brand"
+        type="text"
+        class="form-control"
+        [(ngModel)]="activeCar.brand"
         placeholder="Car Brand"
       />
     </div>
     <div class="mb-3">
       <label class="form-label">Car Model</label>
-      <input type="text" class="form-control" placeholder="Car Brand" />
+      <input
+        name="model"
+        type="text"
+        class="form-control"
+        [(ngModel)]="activeCar.model"
+        placeholder="Car Brand"
+      />
     </div>
     <div class="mb-3">
       <label class="form-label">Car Registration Number</label>
       <input
         type="text"
+        name="registrationNumber"
+        [(ngModel)]="activeCar.registrationNumber"
         class="form-control"
         placeholder="Car Registration Number"
       />
     </div>
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <label for="formFile" class="form-label">Car Picture</label>
       <input class="form-control" type="file" id="formFile" />
-    </div>
+    </div> -->
   </div>
   <div class="modal-footer px-0">
     <div class="d-flex justify-content-between w-100">

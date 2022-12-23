@@ -10,7 +10,20 @@ import { ToastService } from '../toasts/toasts.service';
 export interface ICar {
   id: string;
   name: string;
+  brand?: string;
+  model?: string;
+  registrationNumber?: string;
 }
+
+export const getNullCar = (): ICar => {
+  return {
+    name: '',
+    id: '',
+    brand: '',
+    model: '',
+    registrationNumber: '',
+  };
+};
 
 @Component({
   selector: 'app-manage-cars',
@@ -22,6 +35,9 @@ export class ManageCarsComponent implements OnInit {
     return {
       name: 'Car-' + (key + 1),
       id: '' + key,
+      brand: 'Brand-' + (key + 1),
+      model: 'Model-' + (key + 1),
+      registrationNumber: 'AP 39 M 471' + (key + 1),
     };
   });
 
@@ -30,7 +46,7 @@ export class ManageCarsComponent implements OnInit {
 
   isEdit = false;
 
-  activeCar: ICar = { id: '', name: '' };
+  activeCar: ICar = getNullCar();
 
   constructor(
     config: NgbModalConfig,
@@ -47,7 +63,7 @@ export class ManageCarsComponent implements OnInit {
     isEdit = false,
     size = null,
     centered = false,
-    activeCar: ICar = { id: '', name: '' }
+    activeCar: ICar = getNullCar()
   ) {
     this.isEdit = isEdit;
     this.activeCar = activeCar;
