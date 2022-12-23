@@ -1,24 +1,35 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModal,
+  NgbModalConfig,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
+import { BehaviorSubject } from 'rxjs';
+
+export interface ICar {
+  id: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-manage-cars',
   templateUrl: './manage-cars.component.html',
-  styleUrls: ['./manage-cars.component.css'],
+  styleUrls: ['./manage-cars.component.scss'],
 })
 export class ManageCarsComponent implements OnInit {
-  cars = [
-    { name: 'Car-01', id: '01' },
-    { name: 'Car-02', id: '02' },
-    { name: 'Car-03', id: '03' },
-    { name: 'Car-04', id: '04' },
-    { name: 'Car-05', id: '05' },
-    { name: 'Car-06', id: '06' },
-  ];
+  mockCars: ICar[] = Array.from(Array(50).keys()).map((key) => {
+    return {
+      name: 'Car-' + key,
+      id: '' + key,
+    };
+  });
+
+  carsAction: BehaviorSubject<ICar[]> = new BehaviorSubject(this.mockCars);
+  cars$ = this.carsAction.asObservable();
 
   isEdit = false;
 
-  closeResult: string;
+  activeCar: ICar = { id: '', name: '' };
 
   constructor(config: NgbModalConfig, private modalService: NgbModal) {
     // customize default values of modals used by this component tree
@@ -26,10 +37,31 @@ export class ManageCarsComponent implements OnInit {
     config.keyboard = false;
   }
 
-  open(content, isEdit = false) {
+  open(
+    content,
+    isEdit = false,
+    size = null,
+    centered = false,
+    activeCar: ICar = { id: '', name: '' }
+  ) {
     this.isEdit = isEdit;
-    this.modalService.open(content);
+    this.activeCar = activeCar;
+    const modalRef: NgbModalRef = this.modalService.open(content, {
+      size,
+      centered,
+    });
+    console.log(modalRef.componentInstance);
   }
 
   ngOnInit() {}
+
+  identify(index: number, item: { id: string }) {
+    return item.id;
+  }
+
+  deleteCar() {
+    this.carsAction.next(
+      this.carsAction.value.filter((car) => car.id !== this.activeCar.id)
+    );
+  }
 }
