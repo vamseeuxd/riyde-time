@@ -18,9 +18,9 @@ export interface ICar {
   styleUrls: ['./manage-cars.component.scss'],
 })
 export class ManageCarsComponent implements OnInit {
-  mockCars: ICar[] = Array.from(Array(10).keys()).map((key) => {
+  mockCars: ICar[] = Array.from(Array(5).keys()).map((key) => {
     return {
-      name: 'Car-' + key,
+      name: 'Car-' + (key + 1),
       id: '' + key,
     };
   });
