@@ -67,6 +67,15 @@
       </li>
       <li
         role="button"
+        routerLink="/manage-cars"
+        routerLinkActive="bg-danger text-light"
+        (click)="offcanvas.dismiss('Cross click')"
+        class="list-group-item"
+      >
+        Manage Cars
+      </li>
+      <li
+        role="button"
         (click)="offcanvas.dismiss('Cross click')"
         class="list-group-item"
       >
@@ -75,3 +84,5 @@
     </ul>
   </div>
 </ng-template>
+
+<app-toasts></app-toasts>
