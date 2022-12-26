@@ -14,6 +14,8 @@ import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsComponent } from './toasts/toasts.component';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'coming-soon', pathMatch: 'full' },
@@ -30,7 +32,8 @@ export const routes: Routes = [
     FormsModule,
     NgbToastModule,
     RouterModule.forRoot(routes, { useHash: true }),
-    AngularFireModule.initializeApp(environment.firebase),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
   ],
   declarations: [
     AppComponent,
