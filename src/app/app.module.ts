@@ -13,6 +13,7 @@ import { ManageCarsComponent } from './manage-cars/manage-cars.component';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsComponent } from './toasts/toasts.component';
 import { AngularFireModule } from '@angular/fire';
+import { environment } from '../environments/environment';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'coming-soon', pathMatch: 'full' },
@@ -29,7 +30,7 @@ export const routes: Routes = [
     FormsModule,
     NgbToastModule,
     RouterModule.forRoot(routes, { useHash: true }),
-    AngularFireModule,
+    AngularFireModule.initializeApp(environment.firebase),
   ],
   declarations: [
     AppComponent,
