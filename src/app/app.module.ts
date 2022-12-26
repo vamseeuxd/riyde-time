@@ -13,7 +13,7 @@ import { ManageCarsComponent } from './manage-cars/manage-cars.component';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsComponent } from './toasts/toasts.component';
 import { environment } from '../environments/environment';
-import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire/compat';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'coming-soon', pathMatch: 'full' },
