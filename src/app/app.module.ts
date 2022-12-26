@@ -12,9 +12,8 @@ import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { ManageCarsComponent } from './manage-cars/manage-cars.component';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsComponent } from './toasts/toasts.component';
-import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'coming-soon', pathMatch: 'full' },
@@ -32,7 +31,6 @@ export const routes: Routes = [
     NgbToastModule,
     RouterModule.forRoot(routes, { useHash: true }),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
   ],
   declarations: [
     AppComponent,
