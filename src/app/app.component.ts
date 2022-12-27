@@ -27,7 +27,7 @@ export class AppComponent {
     if (confirm('Are you sure!Do you want to Logout?')) {
       const loader = this.loaderService.show();
       this.auth.signOut();
-      this.route.navigate(['books'])
+      this.route.navigate(['cars'])
       this.loaderService.hide(loader);
     }
   }

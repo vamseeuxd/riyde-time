@@ -1,18 +1,16 @@
-import { PublisherTypeaheadComponent } from './../publisher-typeahead/component';
 import { map } from 'rxjs/operators';
-import { LoaderService } from './../loader.service';
-import { Observable, switchMap, tap } from 'rxjs';
-import { BooksService, ICar, getNewCar } from './books.service';
+import { LoaderService } from '../loader.service';
+import { Observable, tap } from 'rxjs';
+import { CarsService, ICar, getNewCar } from './cars.service';
 import { Component } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { AuthorTypeaheadComponent } from '../author-typeahead/component';
 
 @Component({
-  selector: 'app-books',
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.scss'],
+  selector: 'app-cars',
+  templateUrl: './cars.component.html',
+  styleUrls: ['./cars.component.scss'],
 })
-export class BooksComponent {
+export class CarsComponent {
   cars$: Observable<ICar[] | null> = this.service
     .getAll()
     .valueChanges({ idField: 'id' })
@@ -31,7 +29,7 @@ export class BooksComponent {
   inintLoader: number;
   constructor(
     public loaderService: LoaderService,
-    private service: BooksService
+    private service: CarsService
   ) {
     this.inintLoader = this.loaderService.show();
   }
@@ -40,9 +38,9 @@ export class BooksComponent {
 
   getNewCar = getNewCar;
 
-  editBook: ICar = this.getNewCar();
+  editCar: ICar = this.getNewCar();
 
-  async deleteBook(car: ICar) {
+  async deleteCar(car: ICar) {
     if (car && car.id) {
       const isConfirm = confirm('Are you Sure!Do you want to delete Car?');
       if (isConfirm) {
@@ -53,23 +51,23 @@ export class BooksComponent {
     }
   }
 
-  showEditModal(car: ICar, editBookModal: ModalDirective, isEdit = true) {
+  showEditModal(car: ICar, editCarModal: ModalDirective, isEdit = true) {
     this.isEdit = isEdit;
-    this.editBook = { ...car };
-    editBookModal.show();
+    this.editCar = { ...car };
+    editCarModal.show();
   }
 
-  async saveEdit(editBookModal: ModalDirective) {
-    if (this.isEdit && this.editBook.id) {
+  async saveEdit(editCarModal: ModalDirective) {
+    if (this.isEdit && this.editCar.id) {
       const loader = this.loaderService.show();
-      this.service.update(this.editBook.id, this.editBook);
+      this.service.update(this.editCar.id, this.editCar);
       this.loaderService.hide(loader);
-      editBookModal.hide();
+      editCarModal.hide();
     } else {
       const loader = this.loaderService.show();
-      this.service.create(this.editBook);
+      this.service.create(this.editCar);
       this.loaderService.hide(loader);
-      editBookModal.hide();
+      editCarModal.hide();
     }
   }
 }

@@ -42,29 +42,29 @@ export const getNewCar = (): ICar => {
 @Injectable({
   providedIn: 'root',
 })
-export class BooksService {
-  private dbPath = '/books';
+export class CarsService {
+  private dbPath = '/cars';
 
-  booksRef: AngularFirestoreCollection<ICar>;
+  carsRef: AngularFirestoreCollection<ICar>;
 
   constructor(private db: AngularFirestore) {
-    this.booksRef = db.collection(this.dbPath);
+    this.carsRef = db.collection(this.dbPath);
   }
 
   getAll(): AngularFirestoreCollection<ICar> {
-    return this.booksRef;
+    return this.carsRef;
   }
 
-  create(book: ICar): any {
-    return this.booksRef.add({ ...book });
+  create(car: ICar): any {
+    return this.carsRef.add({ ...car });
   }
 
   update(id: string, data: any): Promise<void> {
     delete data.id;
-    return this.booksRef.doc(id).update(data);
+    return this.carsRef.doc(id).update(data);
   }
 
   delete(id: string): Promise<void> {
-    return this.booksRef.doc(id).delete();
+    return this.carsRef.doc(id).delete();
   }
 }

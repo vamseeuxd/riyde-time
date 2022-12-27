@@ -22,8 +22,8 @@ export class PublishersService {
     return this.authorRef;
   }
 
-  create(book: IAuthor): any {
-    return this.authorRef.add({ ...book });
+  create(car: IAuthor): any {
+    return this.authorRef.add({ ...car });
   }
 
   update(id: string, data: any): Promise<void> {

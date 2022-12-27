@@ -6,7 +6,7 @@
     "start": "ng serve --host 0.0.0.0",
     "build": "ng build --configuration development",
     "deploy": "firebase deploy",
-    "module": "ng g m books --route books --module app ",
+    "module": "ng g m cars --route cars --module app ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
