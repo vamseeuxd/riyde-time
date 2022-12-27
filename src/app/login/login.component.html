@@ -1,0 +1,45 @@
+<firebase-ui
+  (signInSuccessWithAuthResult)="successCallback($event)"
+  (signInFailure)="errorCallback($event)"
+  (uiShown)="uiShownCallback()"
+></firebase-ui>
+
+<div *ngIf="afAuth.authState | async as authState">
+  <button class="btn btn-dark btn-sm" (click)="logout()">Logout</button>
+  <!-- <pre>{{ authState | json }}</pre> -->
+  <ul class="list-group">
+    <li class="list-group-item d-flex">
+      <img class="shadow border" [src]="authState.photoURL" />
+      <div>
+        <h4 class="text-primary text-uppercase m-0 p-0 ms-2">{{ authState.displayName }}</h4>
+        <h5 class="text-danger m-0 p-0 ms-2">{{ authState.email }}</h5>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- {
+  "uid": "OXbC3uRZHqe0rfC85i0L5gZSEZs2",
+  "email": "vamsi.flex@gmail.com",
+  "emailVerified": true,
+  "displayName": "vamsi kalyan",
+  "isAnonymous": false,
+  "photoURL": "https://lh3.googleusercontent.com/a/ALm5wu2z1rd43hHavCq-FQGm9Gcd6w0k-2G5Nv_IzA68=s96-c",
+  "providerData": [
+    {
+      "providerId": "google.com",
+      "uid": "100105445848125370945",
+      "displayName": "vamsi kalyan",
+      "email": "vamsi.flex@gmail.com",
+      "phoneNumber": null,
+      "photoURL": "https://lh3.googleusercontent.com/a/ALm5wu2z1rd43hHavCq-FQGm9Gcd6w0k-2G5Nv_IzA68=s96-c"
+    }
+  ],
+  "stsTokenManager": {
+    "refreshToken": "AOkPPWS6SBU6k4XBtd4pZhxXoKUkajkd61SIG2uoDbpwzjW54apl9FEQDlRN6mKTbMkNbpB8lSXYjb6SOyBhkfL4PflEkPLCLpDFJktnoJny3ZauYFXal91YZp8By1MdAHL7_rw4RTFADduPx7P9QH640ikTRGTf2dpMYw_4iF9Zo11qol5-nhbJjfD_Dhlg8iJvCaj2rr4eDDOOQ4CZyF6pFjhcOh7JKapF9Fj-d_AtBUFg_e6RB4-INGVok5hIYTGAMqlAVi338rEuz7ZBugbfkzgDdVsegWTB0oH0KcTCq8Ftl3zpRCsHEc06-It7W-nhabveG_oFd1nNNNtOu4xeJIfoTUtkDlvwxy-gkl4aOcaoeo_mcYrFuqBN3cQi7duEfppJpVLjtHGyhsLzfNPI4NUp6xST5A",
+    "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk1MWMwOGM1MTZhZTM1MmI4OWU0ZDJlMGUxNDA5NmY3MzQ5NDJhODciLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoidmFtc2kga2FseWFuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FMbTV3dTJ6MXJkNDNoSGF2Q3EtRlFHbTlHY2Q2dzBrLTJHNU52X0l6QTY4PXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2xlbnQtaXQiLCJhdWQiOiJsZW50LWl0IiwiYXV0aF90aW1lIjoxNjcwMTY0ODYzLCJ1c2VyX2lkIjoiT1hiQzN1UlpIcWUwcmZDODVpMEw1Z1pTRVpzMiIsInN1YiI6Ik9YYkMzdVJaSHFlMHJmQzg1aTBMNWdaU0VaczIiLCJpYXQiOjE2NzAxNjQ4NjMsImV4cCI6MTY3MDE2ODQ2MywiZW1haWwiOiJ2YW1zaS5mbGV4QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTAwMTA1NDQ1ODQ4MTI1MzcwOTQ1Il0sImVtYWlsIjpbInZhbXNpLmZsZXhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.Oe3QUGejsTrEnkNeIyYmE65WXjdzb622StXRwz_qVzGCCfCvRE7tYHCZB9-wrLy1JkcMAs46g4TlS_7HJLMkYehoS76t0IJc3vC2PWtYse0C5dKPHWK03b9pahdpyVLTpUApIHllrL8zVlKbq9sLDFg3sss2pbtv9Q_G8lE3FaiOzg5J1GSKQbHix5EIXE7jEFmSR0a39JbeY6AW6f1qEQ5PvESFJfLeVltirFI3a1R3yigrTlC6n4wHVCV4UMsRHNQIwJXbudR8PlLOAOWnIZsGJvDVhRZBYJ3p7aw7cNonHV7HEIPbFvVP-tgZ-JVWYFNIiyV12GqWs7m7Ex9jKA",
+    "expirationTime": 1670168463058
+  },
+  "apiKey": "AIzaSyBUo-rJLDflDXS7mY1BHsMvfJTs2r0PvkI",
+  "appName": "[DEFAULT]"
+} -->

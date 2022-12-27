@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "riydetime": {
+      "hosting": {
+        "riydetime": [
+          "riydetime"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "riydetime"
+  }
+}

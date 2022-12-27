@@ -1,39 +1,34 @@
-import { Component, VERSION } from '@angular/core';
-import {
-  NgbOffcanvas,
-  OffcanvasDismissReasons,
-} from '@ng-bootstrap/ng-bootstrap';
+import { Observable, tap } from 'rxjs';
+import { LoaderService } from './loader.service';
+import { Component } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app';
+import { Router } from '@angular/router';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'my-app',
+  selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  closeResult = '';
-
-  constructor(private offcanvasService: NgbOffcanvas) {}
-
-  open(content) {
-    this.offcanvasService
-      .open(content, { ariaLabelledBy: 'offcanvas-basic-title' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
+  // initLoader: number;
+  user$: Observable<firebase.User | null> = this.auth.user;
+  constructor(
+    public loaderService: LoaderService,
+    public auth: AngularFireAuth,
+    public route: Router,
+    public offcanvasService: NgbOffcanvas
+  ) {}
+  async login() {
+    this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
-
-  private getDismissReason(reason: any): string {
-    if (reason === OffcanvasDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === OffcanvasDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on the backdrop';
-    } else {
-      return `with: ${reason}`;
+  logout() {
+    if (confirm('Are you sure!Do you want to Logout?')) {
+      const loader = this.loaderService.show();
+      this.auth.signOut();
+      this.route.navigate(['books'])
+      this.loaderService.hide(loader);
     }
   }
 }

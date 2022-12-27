@@ -1,50 +1,42 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
-import { AppComponent } from './app.component';
-import { LogoComponent } from './logo/logo.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { MyAccountComponent } from './my-account/my-account.component';
-import { SupportComponent } from './support/support.component';
-import { RouterModule, Routes } from '@angular/router';
-import { ComingSoonComponent } from './coming-soon/coming-soon.component';
-import { ManageCarsComponent } from './manage-cars/manage-cars.component';
-import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
-import { ToastsComponent } from './toasts/toasts.component';
-import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { environment } from '../environments/environment';
 
-export const routes: Routes = [
-  { path: '', redirectTo: 'coming-soon', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'account', component: MyAccountComponent },
-  { path: 'support', component: SupportComponent },
-  { path: 'coming-soon', component: ComingSoonComponent },
-  { path: 'manage-cars', component: ManageCarsComponent },
-];
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
+  declarations: [AppComponent],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
+    NgbDropdownModule,
+    PopoverModule.forRoot(),
+    AppRoutingModule,
     FormsModule,
-    NgbToastModule,
-    RouterModule.forRoot(routes, { useHash: true }),
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore()),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule.enablePersistence(),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
+    NgbModule, // for firestore
   ],
-  declarations: [
-    AppComponent,
-    LogoComponent,
-    ComingSoonComponent,
-    DashboardComponent,
-    MyAccountComponent,
-    SupportComponent,
-    ManageCarsComponent,
-    ToastsComponent,
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
