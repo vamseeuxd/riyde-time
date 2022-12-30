@@ -28,7 +28,7 @@ export interface IFirestoreFormControl {
   id: string;
   placeholder: string;
   label: string;
-  type: string;
+  type: 'email' | 'text' | 'number' | 'date' | 'textarea';
   defaultValue: string | number;
   name: string;
   hide: boolean;
@@ -118,44 +118,53 @@ export class NgFirestoreFormComponent implements OnInit {
     return returnValue;
   }
 
-  getErrorMessage(
-    control: IFirestoreFormControl
-  ): string | null {
+  getErrorMessage(control: IFirestoreFormControl): string | null {
     const formControl = this.firesoteForm?.controls[control.name];
+    if (formControl && !formControl.errors && formControl.dirty) {
+      if (control.type === 'number' || control.type === 'date') {
+        if (formControl.value < control.min) {
+          /* prettier-ignore */
+          setTimeout(() => formControl.setErrors({ min: true }), 0);
+          /* prettier-ignore */
+          return `<small class="text-danger">${ control?.minMessage || `<small>${control.label} should more than ${control.min}</small>`}</small>`;
+        }
+        if (formControl.value > control.max) {
+          /* prettier-ignore */
+          setTimeout(() => formControl.setErrors({ max: true }), 0);
+          /* prettier-ignore */
+          return `<small class="text-danger">${ control?.maxMessage || `<small>${control.label} should less than ${control.max}</small>`}</small>`;
+        }
+      }
+    }
     if (formControl && formControl.errors && formControl.dirty) {
+      // console.log(formControl);
       if ((formControl.errors as any).required) {
-        return `<span class="text-danger">${
-          control?.requiredMessage || `${control.label} is Required`
-        }</span>`;
+        /* prettier-ignore */
+        return `<small class="text-danger">${ control?.requiredMessage || `<small>${control.label} is Required</small>` }</small>`;
       }
       if ((formControl.errors as any).email) {
-        return `<span class="text-danger">${
-          control?.emailMessage || `Provide valid email Address`
-        }</span>`;
+        /* prettier-ignore */
+        return `<small class="text-danger">${ control?.emailMessage || `<small>Provide valid email Address</small>` }</small>`;
       }
       if ((formControl.errors as any).minlength) {
-        return `<span class="text-danger">${
-          control?.minMessage || `Required Minimum of ${control.min} characters`
-        }</span>`;
+        /* prettier-ignore */
+        return `<small class="text-danger">${ control?.minMessage || `<small>Required Minimum of ${control.min} characters</small>` }</small>`;
       }
       if ((formControl.errors as any).min) {
-        return `<span class="text-danger">${
-          control?.minMessage ||
-          `${control.label} should more than ${control.min}`
-        }</span>`;
+        /* prettier-ignore */
+        return `<small class="text-danger">${ control?.minMessage || `<small>${control.label} should more than ${control.min}</small>`}</small>`;
       }
       if ((formControl.errors as any).max) {
-        return `<span class="text-danger">${
-          control?.minMessage ||
-          `${control.label} should not more than ${control.max}`
-        }</span>`;
+        /* prettier-ignore */
+        return `<small class="text-danger">${ control?.maxMessage || `<small>${control.label} should less than ${control.max}</small>`}</small>`;
       }
       if ((formControl.errors as any).pattern) {
-        return `<span class="text-danger">${
-          control?.patternMessage || `Provide ${control.label} in valid pattern`
-        }</span>`;
+        /* prettier-ignore */
+        return `<small class="text-danger">${ control?.patternMessage || `<small>Provide ${control.label} in valid pattern</small>` }</small>`;
       }
     }
     return null;
   }
+
+  getNumberErrorMessage() {}
 }
