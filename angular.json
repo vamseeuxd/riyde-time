@@ -111,6 +111,37 @@
           }
         }
       }
+    },
+    "ng-firestore-form": {
+      "projectType": "library",
+      "root": "projects/ng-firestore-form",
+      "sourceRoot": "projects/ng-firestore-form/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ng-firestore-form/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-firestore-form/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ng-firestore-form/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng-firestore-form/src/test.ts",
+            "tsConfig": "projects/ng-firestore-form/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-firestore-form/karma.conf.js"
+          }
+        }
+      }
     }
   }
 }

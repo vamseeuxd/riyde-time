@@ -1,3 +1,4 @@
+import { NgFirestoreFormModule } from './../../../projects/ng-firestore-form/src/lib/ng-firestore-form.module';
 import { PublisherTypeaheadModule } from '../publisher-typeahead/module';
 import { AuthorTypeaheadModule } from '../author-typeahead/module';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     PublisherTypeaheadModule,
     CarsRoutingModule,
     ModalModule.forRoot(),
+    NgFirestoreFormModule,
   ],
 })
 export class CarsModule {}

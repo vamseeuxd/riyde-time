@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
   <div class="col-md-12 offset-md-0 col-sm-12 offset-sm-0">
 
     <h4 class="text-muted mt-2 mb-3 border-bottom pb-2 d-flex">
@@ -16,7 +16,7 @@
     <ul class="list-group" *ngIf="cars$ | async as cars; else noCarsToShow">
       <li class="list-group-item d-flex align-items-center" *ngFor="let car of cars">
         <h6 class="m-0 p-0 w-100 me-2">
-          <h5 [class.border-bottom]="car.open" [class.mb-2]="car.open" [class.pb-2]="car.open" class="w-100 d-flex align-items-center m-0 p-0"> 
+          <h5 [class.border-bottom]="car.open" [class.mb-2]="car.open" [class.pb-2]="car.open" class="w-100 d-flex align-items-center m-0 p-0">
             <span role="button" (click)="car.open = !car.open"> <i class="fa fa-car me-2 text-danger"></i> {{ car.title }} </span>
             <button (click)="deleteCar(car)" title="Delete Car" class="btn btn-danger btn-sm ms-auto shadow-sm">
               <i class="fa fa-trash"></i>
@@ -40,7 +40,7 @@
             <li class="list-group-item">Engine Number : <span class="fw-bold">{{ car.engineNumber }}</span></li>
           </ul>
         </h6>
-        
+
       </li>
     </ul>
   </div>
@@ -60,22 +60,26 @@
       </div>
       <form #carForm="ngForm" class="modal-body">
         <div class="row">
-          <div class="col-md-6 mb-3"> <label class="form-label">Title</label> <input required minlength="3" type="text" name="title" #title [(ngModel)]="editCar.title" class="form-control" placeholder="Enter Car Title" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">Brand</label> <input type="text" name="brand" #brand [(ngModel)]="editCar.brand" class="form-control" placeholder="Enter Car Brand" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">Model</label> <input type="text" name="model" #model [(ngModel)]="editCar.model" class="form-control" placeholder="Enter Car Model" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">Type</label> <input type="text" name="type" #type [(ngModel)]="editCar.type" class="form-control" placeholder="Enter Car Type" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">No Of Seats</label> <input type="text" name="noOfSeats" #noOfSeats [(ngModel)]="editCar.noOfSeats" class="form-control" placeholder="Provide No Of Seats" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">Title</label>               <input required minlength="3" type="text" name="title" #title [(ngModel)]="editCar.title" class="form-control" placeholder="Enter Car Title" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">Brand</label>               <input type="text" name="brand" #brand [(ngModel)]="editCar.brand" class="form-control" placeholder="Enter Car Brand" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">Model</label>               <input type="text" name="model" #model [(ngModel)]="editCar.model" class="form-control" placeholder="Enter Car Model" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">Type</label>                <input type="text" name="type" #type [(ngModel)]="editCar.type" class="form-control" placeholder="Enter Car Type" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">No Of Seats</label>         <input type="text" name="noOfSeats" #noOfSeats [(ngModel)]="editCar.noOfSeats" class="form-control" placeholder="Provide No Of Seats" /> </div>
           <div class="col-md-6 mb-3"> <label class="form-label">Registration Number</label> <input type="text" name="registrationNumber" #registrationNumber [(ngModel)]="editCar.registrationNumber" class="form-control" placeholder="Enter Car Registration Number" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">Color</label> <input type="text" name="color" #color [(ngModel)]="editCar.color" class="form-control" placeholder="Provide Car Color" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">RC Photo</label> <input type="text" name="rcPhoto" #rcPhoto [(ngModel)]="editCar.rcPhoto" class="form-control" placeholder="Provide Car RC Photo" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">Polution Photo</label> <input type="text" name="polutionPhoto" #polutionPhoto [(ngModel)]="editCar.polutionPhoto" class="form-control" placeholder="Provide Car Polution Photo" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">Insurance Photo</label> <input type="text" name="insurancePhoto" #insurancePhoto [(ngModel)]="editCar.insurancePhoto" class="form-control" placeholder="Provide Car Insurance Photo" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">Chassie Number</label> <input type="text" name="chassieNumber" #chassieNumber [(ngModel)]="editCar.chassieNumber" class="form-control" placeholder="Enter Car Chassie Number" /> </div>
-          <div class="col-md-6 mb-3"> <label class="form-label">Engine Number</label> <input type="text" name="engineNumber" #engineNumber [(ngModel)]="editCar.engineNumber" class="form-control" placeholder="Enter Car Engine Number" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">Color</label>               <input type="text" name="color" #color [(ngModel)]="editCar.color" class="form-control" placeholder="Provide Car Color" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">RC Photo</label>            <input type="file" (change)="onFileChange($event,'rcPhoto')" accept=".png,.jpg" name="rcPhoto" #rcPhoto class="form-control" placeholder="Provide Car RC Photo" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">Polution Photo</label>      <input type="file" (change)="onFileChange($event,'polutionPhoto')" accept=".png,.jpg" name="polutionPhoto" #polutionPhoto class="form-control" placeholder="Provide Car Polution Photo" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">Insurance Photo</label>     <input type="file" (change)="onFileChange($event,'insurancePhoto')" accept=".png,.jpg" name="insurancePhoto" #insurancePhoto class="form-control" placeholder="Provide Car Insurance Photo" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">Chassie Number</label>      <input type="text" name="chassieNumber" #chassieNumber [(ngModel)]="editCar.chassieNumber" class="form-control" placeholder="Enter Car Chassie Number" /> </div>
+          <div class="col-md-6 mb-3"> <label class="form-label">Engine Number</label>       <input type="text" name="engineNumber" #engineNumber [(ngModel)]="editCar.engineNumber" class="form-control" placeholder="Enter Car Engine Number" /> </div>
         </div>
 
         <div class="d-flex">
           <button (click)="saveEdit(editCarModal)" [disabled]="carForm.invalid" class="btn btn-outline-danger btn-sm ms-auto">Save</button>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadProgress | async) + '%'" [attr.aria-valuenow]="(uploadProgress | async)" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </form>
     </div>
@@ -88,3 +92,6 @@
     Show...
   </h5>
 </ng-template>
+ -->
+
+ <ng-firestore-form></ng-firestore-form>

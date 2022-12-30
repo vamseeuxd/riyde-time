@@ -1,0 +1,128 @@
+<form class="row pt-2" #firesoteForm="ngForm">
+  <ng-container *ngFor="let control of controls" [ngSwitch]="control.type">
+    <!-- prettier-ignore -->
+    <div *ngIf="!control.hide" [class]=" getResponsiveClass('col', control.column) + ' ' + getResponsiveClass('offset', control.offset)">
+      <!-- prettier-ignore -->
+      <ng-container [ngTemplateOutlet]="controlLabel" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'email'" [ngTemplateOutlet]="emaiControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'text'" [ngTemplateOutlet]="textInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'number'" [ngTemplateOutlet]="numberInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'date'" [ngTemplateOutlet]="numberInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'textarea'" [ngTemplateOutlet]="textareaControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
+      <ng-container [ngTemplateOutlet]="validationMessage" [ngTemplateOutletContext]="{ control }"></ng-container>
+    </div>
+  </ng-container>
+  <div class="col-12">
+    <!-- prettier-ignore -->
+    <button type="button" (click)="firesoteForm.resetForm(defaultValues)" class="btn btn-dark">Reset</button>
+  </div>
+
+  <ng-template #emaiControl let-control="control">
+    <input
+      type="email"
+      #formControl="ngModel"
+      autocomplete="off"
+      [class.text-muted]="control.disabled"
+      [class.is-invalid]="formControl.invalid && formControl.dirty"
+      [class.is-valid]="formControl.valid && formControl.dirty"
+      [disabled]="control.disabled"
+      [required]="control.required"
+      email
+      [minlength]="control.min"
+      [maxlength]="control.max"
+      [defaultValue]="control.defaultValue"
+      [ngModel]="control.defaultValue"
+      class="form-control"
+      [name]="control.name"
+      [id]="control.id"
+      [placeholder]="control.placeholder"
+    />
+  </ng-template>
+
+  <ng-template #textInputControl let-control="control">
+    <input
+      type="text"
+      #formControl="ngModel"
+      autocomplete="off"
+      [class.text-muted]="control.disabled"
+      [class.is-invalid]="formControl.invalid && formControl.dirty"
+      [class.is-valid]="formControl.valid && formControl.dirty"
+      [disabled]="control.disabled"
+      [required]="control.required"
+      [minlength]="control.min"
+      [pattern]="control.pattern"
+      [maxlength]="control.max"
+      [defaultValue]="control.defaultValue"
+      [ngModel]="control.defaultValue"
+      class="form-control"
+      [name]="control.name"
+      [id]="control.id"
+      [placeholder]="control.placeholder"
+    />
+  </ng-template>
+
+  <ng-template #numberInputControl let-control="control">
+    <input
+      [type]="control.type"
+      #formControl="ngModel"
+      autocomplete="off"
+      [class.text-muted]="control.disabled"
+      [class.is-invalid]="formControl.invalid && formControl.dirty"
+      [class.is-valid]="formControl.valid && formControl.dirty"
+      [disabled]="control.disabled"
+      [required]="control.required"
+      [min]="control.min"
+      [max]="control.max"
+      [defaultValue]="control.defaultValue"
+      [ngModel]="control.defaultValue"
+      class="form-control"
+      [name]="control.name"
+      [id]="control.id"
+      [placeholder]="control.placeholder"
+    />
+  </ng-template>
+
+  <ng-template #textareaControl let-control="control">
+    <textarea
+      #formControl="ngModel"
+      autocomplete="off"
+      [rows]="control.rows"
+      [cols]="control.cols"
+      [style.resize]="control.resize || 'none'"
+      [class.text-muted]="control.disabled"
+      [class.is-invalid]="formControl.invalid && formControl.dirty"
+      [class.is-valid]="formControl.valid && formControl.dirty"
+      [disabled]="control.disabled"
+      [required]="control.required"
+      [minlength]="control.min"
+      [pattern]="control.pattern"
+      [maxlength]="control.max"
+      [defaultValue]="control.defaultValue"
+      [ngModel]="control.defaultValue"
+      class="form-control"
+      [name]="control.name"
+      [id]="control.id"
+      [placeholder]="control.placeholder"
+    ></textarea>
+  </ng-template>
+
+  <!-- prettier-ignore -->
+  <ng-template #validationMessage let-formControl="formControl" let-control="control">
+  <!-- prettier-ignore -->
+  <small><div class="mb-1" [innerHTML]="getErrorMessage(control) || control?.help || '&nbsp'"></div></small>
+</ng-template>
+
+  <!-- prettier-ignore -->
+  <ng-template #controlLabel let-control="control">
+  <!-- prettier-ignore -->
+  <label [class.text-muted]="control.disabled" [for]="control.id" class="form-label">{{ control.label }}<span class="fw-bold" *ngIf="control.required">*</span></label>
+</ng-template>
+</form>
+
+<!-- <pre>{{ firesoteForm.value | json }}</pre> -->

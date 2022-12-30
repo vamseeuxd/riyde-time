@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { CarsService, ICar, getNewCar } from './cars.service';
 import { Component } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-cars',
@@ -23,15 +24,19 @@ export class CarsComponent {
         }
       }),
       tap((d) => {
-        this.loaderService.hide(this.inintLoader);
+        this.inintLoader && this.loaderService.hide(this.inintLoader);
       })
     );
-  inintLoader: number;
+  inintLoader: number | undefined;
+  ref: AngularFireStorageReference | undefined;
+  task: AngularFireUploadTask | undefined;
+  uploadProgress: Observable<number | undefined> | undefined;
   constructor(
     public loaderService: LoaderService,
-    private service: CarsService
+    public afStorage: AngularFireStorage,
+    public service: CarsService
   ) {
-    this.inintLoader = this.loaderService.show();
+    // this.inintLoader = this.loaderService.show();
   }
 
   isEdit = false;
@@ -57,8 +62,18 @@ export class CarsComponent {
     editCarModal.show();
   }
 
+  async onFileChange(event: any, prop: string) {
+    console.log(event.target.files[0], prop);
+    const id = prop + '_' + Math.random().toString(36).substring(2);
+    this.ref = this.afStorage.ref(id);
+    this.task = this.ref.put(event.target.files[0]);
+    this.uploadProgress = this.task.percentageChanges();
+    // https://medium.com/codingthesmartway-com-blog/firebase-cloud-storage-with-angular-394566fd529
+    // https://github.com/angular/angularfire/blob/master/docs/storage/storage.md
+  }
+
   async saveEdit(editCarModal: ModalDirective) {
-    if (this.isEdit && this.editCar.id) {
+    /* if (this.isEdit && this.editCar.id) {
       const loader = this.loaderService.show();
       this.service.update(this.editCar.id, this.editCar);
       this.loaderService.hide(loader);
@@ -68,6 +83,7 @@ export class CarsComponent {
       this.service.create(this.editCar);
       this.loaderService.hide(loader);
       editCarModal.hide();
-    }
+    } */
+    console.log(this.editCar);
   }
 }
