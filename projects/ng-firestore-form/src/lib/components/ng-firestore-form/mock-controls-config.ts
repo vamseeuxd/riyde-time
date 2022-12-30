@@ -112,3 +112,17 @@ export const MOCK_TEXT_AREA: IFirestoreFormControl = {
   offset: DEFAULT_OFFSET,
   column: DEFAULT_COLUMN,
 };
+
+export const MOCK_SELECT: IFirestoreFormControl = {
+  id: 'city',
+  placeholder: 'Select City',
+  label: 'Select City',
+  type: 'select',
+  defaultValue: '1',
+  name: 'city',
+  required: true,
+  disabled: false,
+  hide: false,
+  offset: DEFAULT_OFFSET,
+  column: DEFAULT_COLUMN,
+};

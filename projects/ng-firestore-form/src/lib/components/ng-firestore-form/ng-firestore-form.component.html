@@ -15,6 +15,8 @@
       <!-- prettier-ignore -->
       <ng-container *ngSwitchCase="'textarea'" [ngTemplateOutlet]="textareaControl" [ngTemplateOutletContext]="{ control }"></ng-container>
       <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'select'" [ngTemplateOutlet]="selectControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
       <ng-container [ngTemplateOutlet]="validationMessage" [ngTemplateOutletContext]="{ control }"></ng-container>
     </div>
   </ng-container>
@@ -112,6 +114,30 @@
     ></textarea>
   </ng-template>
 
+  <ng-template #selectControl let-control="control">
+    <select
+      #formControl="ngModel"
+      autocomplete="off"
+      [class.text-muted]="control.disabled"
+      [class.is-invalid]="formControl.invalid && formControl.dirty"
+      [class.is-valid]="formControl.valid && formControl.dirty"
+      [disabled]="control.disabled"
+      [required]="control.required"
+      [minlength]="control.min"
+      [pattern]="control.pattern"
+      [maxlength]="control.max"
+      [ngModel]="control.defaultValue"
+      class="form-control"
+      [name]="control.name"
+      [id]="control.id"
+    >
+    <option value="1">City-1</option>
+    <option value="2">City-2</option>
+    <option value="3">City-3</option>
+    <option value="4">City-4</option>
+  </select>
+  </ng-template>
+
   <!-- prettier-ignore -->
   <ng-template #validationMessage let-formControl="formControl" let-control="control">
   <!-- prettier-ignore -->
@@ -121,7 +147,7 @@
   <!-- prettier-ignore -->
   <ng-template #controlLabel let-control="control">
   <!-- prettier-ignore -->
-  <label [class.text-muted]="control.disabled" [for]="control.id" class="form-label">{{ control.label }}<span class="fw-bold" *ngIf="control.required">*</span></label>
+  <label [class.text-muted]="control.disabled" [for]="control.id" class="form-label">{{ control.label }}<span class="text-danger ms-1 fw-bold" *ngIf="control.required">*</span></label>
 </ng-template>
 </form>
 

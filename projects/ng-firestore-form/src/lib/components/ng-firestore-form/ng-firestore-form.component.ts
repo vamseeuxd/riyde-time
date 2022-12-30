@@ -4,6 +4,7 @@ import {
   MOCK_NUMBER,
   MOCK_DATE,
   MOCK_TEXT_AREA,
+  MOCK_SELECT,
 } from './mock-controls-config';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgModel, NgForm } from '@angular/forms';
@@ -28,14 +29,14 @@ export interface IFirestoreFormControl {
   id: string;
   placeholder: string;
   label: string;
-  type: 'email' | 'text' | 'number' | 'date' | 'textarea';
+  type: 'email' | 'text' | 'number' | 'date' | 'textarea' | 'select';
   defaultValue: string | number;
   name: string;
   hide: boolean;
   disabled: boolean;
-  min: number | string;
+  min?: number | string;
   minMessage?: string;
-  max: number | string;
+  max?: number | string;
   maxMessage?: string;
   pattern?: string;
   help?: string;
@@ -80,6 +81,7 @@ export class NgFirestoreFormComponent implements OnInit {
     MOCK_NUMBER,
     MOCK_DATE,
     MOCK_TEXT_AREA,
+    MOCK_SELECT,
   ];
 
   constructor() {}
@@ -122,13 +124,13 @@ export class NgFirestoreFormComponent implements OnInit {
     const formControl = this.firesoteForm?.controls[control.name];
     if (formControl && !formControl.errors && formControl.dirty) {
       if (control.type === 'number' || control.type === 'date') {
-        if (formControl.value < control.min) {
+        if (control.min && formControl.value < control.min) {
           /* prettier-ignore */
           setTimeout(() => formControl.setErrors({ min: true }), 0);
           /* prettier-ignore */
           return `<small class="text-danger">${ control?.minMessage || `<small>${control.label} should more than ${control.min}</small>`}</small>`;
         }
-        if (formControl.value > control.max) {
+        if (control.max && formControl.value > control.max) {
           /* prettier-ignore */
           setTimeout(() => formControl.setErrors({ max: true }), 0);
           /* prettier-ignore */
