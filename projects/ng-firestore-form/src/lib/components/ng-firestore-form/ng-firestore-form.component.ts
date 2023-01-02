@@ -159,6 +159,10 @@ export class NgFirestoreFormComponent implements OnInit {
         /* prettier-ignore */
         return `<small class="text-danger">${ control?.minMessage || `<small>Required Minimum of ${control.min} characters</small>` }</small>`;
       }
+      if ((formControl.errors as any).maxlength) {
+        /* prettier-ignore */
+        return `<small class="text-danger">${ control?.maxMessage || `<small>Required Maximum of ${control.max} characters</small>` }</small>`;
+      }
       if ((formControl.errors as any).min) {
         /* prettier-ignore */
         return `<small class="text-danger">${ control?.minMessage || `<small>${control.label} should more than ${control.min}</small>`}</small>`;
