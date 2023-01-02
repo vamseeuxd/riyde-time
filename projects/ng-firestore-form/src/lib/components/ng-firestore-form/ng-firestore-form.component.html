@@ -17,6 +17,8 @@
       <!-- prettier-ignore -->
       <ng-container *ngSwitchCase="'select'" [ngTemplateOutlet]="selectControl" [ngTemplateOutletContext]="{ control }"></ng-container>
       <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'multi-select'" [ngTemplateOutlet]="multiSelectControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
       <ng-container [ngTemplateOutlet]="validationMessage" [ngTemplateOutletContext]="{ control }"></ng-container>
     </div>
   </ng-container>
@@ -131,11 +133,46 @@
       [name]="control.name"
       [id]="control.id"
     >
-    <option value="1">City-1</option>
-    <option value="2">City-2</option>
-    <option value="3">City-3</option>
-    <option value="4">City-4</option>
-  </select>
+      <option value="" disabled>{{ control.placeholder }}</option>
+      <ng-container *ngIf="control.dataProvider">
+        <option
+          *ngFor="let option of control.dataProvider.data"
+          [value]="option[control.dataProvider.idField]"
+        >
+          {{ option[control.dataProvider.labelField] }}
+        </option>
+      </ng-container>
+    </select>
+  </ng-template>
+
+  <ng-template #multiSelectControl let-control="control">
+    <select
+      #formControl="ngModel"
+      autocomplete="off"
+      multiple
+      [class.text-muted]="control.disabled"
+      [class.is-invalid]="formControl.invalid && formControl.dirty"
+      [class.is-valid]="formControl.valid && formControl.dirty"
+      [disabled]="control.disabled"
+      [required]="control.required"
+      [minlength]="control.min"
+      [pattern]="control.pattern"
+      [maxlength]="control.max"
+      [ngModel]="control.defaultValue"
+      class="form-control"
+      [name]="control.name"
+      [id]="control.id"
+    >
+      <!-- <option value="" disabled>{{ control.placeholder }}</option> -->
+      <ng-container *ngIf="control.dataProvider">
+        <option
+          *ngFor="let option of control.dataProvider.data"
+          [value]="option[control.dataProvider.idField]"
+        >
+          {{ option[control.dataProvider.labelField] }}
+        </option>
+      </ng-container>
+    </select>
   </ng-template>
 
   <!-- prettier-ignore -->
@@ -151,4 +188,4 @@
 </ng-template>
 </form>
 
-<!-- <pre>{{ firesoteForm.value | json }}</pre> -->
+<pre>{{ firesoteForm.value | json }}</pre>

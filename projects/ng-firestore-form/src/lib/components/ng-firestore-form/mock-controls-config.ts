@@ -64,7 +64,7 @@ export const MOCK_NUMBER: IFirestoreFormControl = {
   required: true,
   disabled: false,
   hide: false,
-  help:'<small class="text-muted"><small>Age should in between 18 to 30</small></small>',
+  help: '<small class="text-muted"><small>Age should in between 18 to 30</small></small>',
   min: 18,
   max: 30,
   offset: DEFAULT_OFFSET,
@@ -81,7 +81,7 @@ export const MOCK_DATE: IFirestoreFormControl = {
   required: true,
   maxMessage: '<small>Date should before 20<sup>th</sup>-Dec-2022</small>',
   minMessage: '<small>Date should after 15<sup>th</sup>-Dec-2022</small>',
-  help:'<small class="text-muted"><small>Date should in between 15<sup>th</sup>-Dec-2022 to 20<sup>th</sup>-Dec-2022</small></small>',
+  help: '<small class="text-muted"><small>Date should in between 15<sup>th</sup>-Dec-2022 to 20<sup>th</sup>-Dec-2022</small></small>',
   disabled: false,
   hide: false,
   min: '2022-12-15',
@@ -125,4 +125,38 @@ export const MOCK_SELECT: IFirestoreFormControl = {
   hide: false,
   offset: DEFAULT_OFFSET,
   column: DEFAULT_COLUMN,
+  dataProvider: {
+    data: [
+      { id: '1', label: 'Chennai' },
+      { id: '2', label: 'Hyderabad' },
+      { id: '3', label: 'Vijayawada' },
+      { id: '4', label: 'Vizag' },
+    ],
+    labelField: 'label',
+    idField: 'id',
+  },
+};
+
+export const MOCK_MULTI_SELECT: IFirestoreFormControl = {
+  id: 'city',
+  placeholder: 'Select Hobbies',
+  label: 'Select Hobbies',
+  type: 'multi-select',
+  defaultValue: ['1', '3'],
+  name: 'hobbies',
+  required: true,
+  disabled: false,
+  hide: false,
+  offset: DEFAULT_OFFSET,
+  column: DEFAULT_COLUMN,
+  dataProvider: {
+    data: [
+      { id: '1', label: 'Hobbies 1' },
+      { id: '2', label: 'Hobbies 2' },
+      { id: '3', label: 'Hobbies 3' },
+      { id: '4', label: 'Hobbies 4' },
+    ],
+    labelField: 'label',
+    idField: 'id',
+  },
 };

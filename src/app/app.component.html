@@ -1,13 +1,46 @@
 <nav class="navbar bg-danger shadow navbar-expand">
   <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-      aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarTogglerDemo01"
+      aria-controls="navbarTogglerDemo01"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
+    <ng-template #mainMenuContent let-offcanvas>
+      <div class="offcanvas-header bg-danger">
+        <h4 class="offcanvas-title d-flex text-white">Main Menu</h4>
+        <button
+          type="button"
+          class="btn btn-outline-danger border text-white"
+          aria-label="Close"
+          (click)="offcanvas.dismiss('Cross click')"
+        >
+        <i class="fa fa-close text-white" style="font-size: 20px;"></i>
+      </button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="list-group">
+          <!-- prettier-ignore -->
+          <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-file me-2"></i>Menu-1</a>
+          <!-- prettier-ignore -->
+          <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-file me-2"></i>Menu-2</a>
+          <!-- prettier-ignore -->
+          <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-file me-2"></i>Menu-3</a>
+          <!-- prettier-ignore -->
+          <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-file me-2"></i>Menu-4</a>
+        </ul>
+        <!-- <pre>{{user|json}}</pre> -->
+      </div>
+    </ng-template>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       <a class="navbar-brand">
         <span class="text-white fw-bold">
-          <i class="fa fa-bars text-white me-3" role="button"></i>
+          <i (click)="offcanvasService.open(mainMenuContent, { position: 'start' })" class="fa fa-bars text-white me-3" role="button"></i>
           <span class="text-dark">RIYDE</span>
           <span class="text-light ms-2">TIME</span>
         </span>
@@ -25,8 +58,14 @@
       </ul> -->
       <ng-container *ngIf="user$ | async as user">
         <div class="d-flex ms-auto" role="search">
-          <img [src]="user.photoURL" role="button" (click)="offcanvasService.open(content, { position: 'end' })"
-            class="rounded-circle shadow border" width="45" alt="">
+          <img
+            [src]="user.photoURL"
+            role="button"
+            (click)="offcanvasService.open(content, { position: 'end' })"
+            class="rounded-circle shadow border"
+            width="45"
+            alt=""
+          />
           <!-- <ul class="user-menu list-group shadow">
             <a class="list-group-item list-group-item-action"><i class="text-danger fa fa-cog me-2"></i>Settings</a>
             <a class="list-group-item list-group-item-action"><i class="text-danger fa fa-address-card me-2"></i>Address</a>
@@ -36,35 +75,66 @@
         </div>
 
         <ng-template #content let-offcanvas>
-          <div class="offcanvas-header">
+          <div class="offcanvas-header bg-danger pb-1 pt-2">
             <div class="offcanvas-title d-flex">
-              <img [src]="user.photoURL" role="button" (click)="offcanvasService.open(content, { position: 'end' })"
-                class="rounded-circle shadow border" width="45" alt="">
-              <div class="ms-3 ps-3 border-start">
-                <div class="text-capitalize">{{user.displayName}}</div>
-                <div><code>{{user.email}}</code></div>
+              <img
+                [src]="user.photoURL"
+                role="button"
+                class="rounded-circle shadow border"
+                width="50"
+                alt=""
+              />
+              <div class="ms-3 text-white">
+                <div class="text-capitalize">{{ user.displayName }}</div>
+                <div>{{ user.email }}</div>
               </div>
             </div>
-            <button type="button" class="btn-close" aria-label="Close"
-              (click)="offcanvas.dismiss('Cross click')"></button>
+            <button
+              type="button"
+              class="btn-close text-white"
+              aria-label="Close"
+              (click)="offcanvas.dismiss('Cross click')"
+            ></button>
           </div>
           <div class="offcanvas-body">
             <ul class="list-group">
-              <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-cog me-2"></i>Settings</a>
-              <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-address-card me-2"></i>Address</a>
-              <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-road me-2"></i>Your Rides</a>
-              <a role="button" (click)="offcanvas.dismiss('Cross click');logout()" class="list-group-item list-group-item-action"><i class="text-danger fa fa-sign-out me-2"></i>Logout</a>
+              <a
+                role="button"
+                (click)="offcanvas.dismiss('Cross click')"
+                class="list-group-item list-group-item-action"
+                ><i class="text-danger fa fa-cog me-2"></i>Settings</a
+              >
+              <a
+                role="button"
+                (click)="offcanvas.dismiss('Cross click')"
+                class="list-group-item list-group-item-action"
+                ><i class="text-danger fa fa-address-card me-2"></i>Address</a
+              >
+              <a
+                role="button"
+                (click)="offcanvas.dismiss('Cross click')"
+                class="list-group-item list-group-item-action"
+                ><i class="text-danger fa fa-road me-2"></i>Your Rides</a
+              >
+              <a
+                role="button"
+                (click)="offcanvas.dismiss('Cross click'); logout()"
+                class="list-group-item list-group-item-action"
+                ><i class="text-danger fa fa-sign-out me-2"></i>Logout</a
+              >
             </ul>
             <!-- <pre>{{user|json}}</pre> -->
           </div>
         </ng-template>
-
       </ng-container>
     </div>
   </div>
 </nav>
 <div class="container-fluid pt-2">
-  <div class="border container-fluid shadow" style="min-height: calc(100vh - 80px)">
+  <div
+    class="border container-fluid shadow"
+    style="min-height: calc(100vh - 80px)"
+  >
     <ng-container *ngIf="user$ | async as user; else showLogin">
       <router-outlet></router-outlet>
       <!-- <small>
@@ -74,9 +144,11 @@
   </div>
 </div>
 
-<div *ngIf="loaderService.isLoader"
+<div
+  *ngIf="loaderService.isLoader"
   class="fixed-top vw-100 vh-100 d-flex flex-column justify-content-center align-items-center"
-  style="background-color: rgba(0, 0, 0, 0.5);z-index: 100000;">
+  style="background-color: rgba(0, 0, 0, 0.5); z-index: 100000"
+>
   <!-- <div class="spinner-border text-info" role="status">
     <span class="visually-hidden">Loading...</span>
   </div> -->
@@ -85,8 +157,10 @@
 </div>
 
 <ng-template #showLogin>
-  <div style="min-height: calc(100vh - 80px)"
-    class="d-flex w-100 h-100 d-flex flex-column justify-content-center align-items-center">
+  <div
+    style="min-height: calc(100vh - 80px)"
+    class="d-flex w-100 h-100 d-flex flex-column justify-content-center align-items-center"
+  >
     <button class="btn btn-danger rounded-0 shadow" (click)="login()">
       Google Login
     </button>

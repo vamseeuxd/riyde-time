@@ -5,6 +5,7 @@ import {
   MOCK_DATE,
   MOCK_TEXT_AREA,
   MOCK_SELECT,
+  MOCK_MULTI_SELECT,
 } from './mock-controls-config';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgModel, NgForm } from '@angular/forms';
@@ -29,8 +30,8 @@ export interface IFirestoreFormControl {
   id: string;
   placeholder: string;
   label: string;
-  type: 'email' | 'text' | 'number' | 'date' | 'textarea' | 'select';
-  defaultValue: string | number;
+  type: 'email' | 'text' | 'number' | 'date' | 'textarea' | 'select' | 'multi-select';
+  defaultValue: string | number | any[];
   name: string;
   hide: boolean;
   disabled: boolean;
@@ -49,6 +50,11 @@ export interface IFirestoreFormControl {
   resize?: 'both' | 'horizontal' | 'vertical' | 'none';
   offset: IOffset;
   column: IColumn;
+  dataProvider?: {
+    data: any[];
+    idField: string;
+    labelField: string;
+  };
 }
 
 export const DEFAULT_OFFSET: IOffset = {
@@ -82,6 +88,7 @@ export class NgFirestoreFormComponent implements OnInit {
     MOCK_DATE,
     MOCK_TEXT_AREA,
     MOCK_SELECT,
+    MOCK_MULTI_SELECT,
   ];
 
   constructor() {}
