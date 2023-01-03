@@ -1,10 +1,27 @@
+import {
+  MOCK_EMAIL,
+  MOCK_TEXT,
+  MOCK_NUMBER,
+  MOCK_DATE,
+  MOCK_TEXT_AREA,
+  MOCK_SELECT,
+  MOCK_MULTI_SELECT,
+  MOCK_FILE,
+  MOCK_RADIO,
+  MOCK_CHECK_BOXES,
+} from './../../../projects/ng-firestore-form/src/lib/components/ng-firestore-form/mock-controls-config';
+import { IFirestoreFormControl } from './../../../projects/ng-firestore-form/src/lib/components/ng-firestore-form/ng-firestore-form.component';
 import { map } from 'rxjs/operators';
 import { LoaderService } from '../loader.service';
 import { Observable, tap } from 'rxjs';
 import { CarsService, ICar, getNewCar } from './cars.service';
 import { Component } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/compat/storage';
+import {
+  AngularFireStorage,
+  AngularFireStorageReference,
+  AngularFireUploadTask,
+} from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-cars',
@@ -12,6 +29,19 @@ import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask 
   styleUrls: ['./cars.component.scss'],
 })
 export class CarsComponent {
+  controls: IFirestoreFormControl[] = [
+    MOCK_EMAIL,
+    MOCK_TEXT,
+    MOCK_NUMBER,
+    MOCK_DATE,
+    MOCK_TEXT_AREA,
+    MOCK_SELECT,
+    MOCK_MULTI_SELECT,
+    MOCK_FILE,
+    MOCK_RADIO,
+    MOCK_CHECK_BOXES,
+  ];
+
   cars$: Observable<ICar[] | null> = this.service
     .getAll()
     .valueChanges({ idField: 'id' })

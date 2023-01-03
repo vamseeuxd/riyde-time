@@ -6,8 +6,17 @@ import {
   MOCK_TEXT_AREA,
   MOCK_SELECT,
   MOCK_MULTI_SELECT,
+  MOCK_FILE,
+  MOCK_RADIO,
+  MOCK_CHECK_BOXES,
 } from './mock-controls-config';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NgModel, NgForm } from '@angular/forms';
 
 export interface IOffset {
@@ -30,9 +39,21 @@ export interface IFirestoreFormControl {
   id: string;
   placeholder: string;
   label: string;
-  type: 'email' | 'text' | 'number' | 'date' | 'textarea' | 'select' | 'multi-select';
-  defaultValue: string | number | any[];
+  type:
+    | 'email'
+    | 'text'
+    | 'number'
+    | 'date'
+    | 'textarea'
+    | 'select'
+    | 'multi-select'
+    | 'radio'
+    | 'check-box'
+    | 'file';
+  defaultValue: string | number | any[] | null;
   name: string;
+  accept?: string;
+  isCheckInline?: boolean;
   hide: boolean;
   disabled: boolean;
   min?: number | string;
@@ -78,22 +99,43 @@ export const DEFAULT_COLUMN: IColumn = {
   templateUrl: `./ng-firestore-form.component.html`,
   styles: [],
 })
-export class NgFirestoreFormComponent implements OnInit {
+export class NgFirestoreFormComponent implements AfterViewInit {
   @ViewChild('firesoteForm')
   firesoteForm!: NgForm;
-  controls: IFirestoreFormControl[] = [
-    MOCK_EMAIL,
-    MOCK_TEXT,
-    MOCK_NUMBER,
-    MOCK_DATE,
-    MOCK_TEXT_AREA,
-    MOCK_SELECT,
-    MOCK_MULTI_SELECT,
-  ];
+  private _controls: IFirestoreFormControl[] = [];
+  public get controls(): IFirestoreFormControl[] {
+    return this._controls;
+  }
+  @Input()
+  public set controls(value: IFirestoreFormControl[]) {
+    this._controls = value;
+    this.updateCheckBoxData();
+  }
 
   constructor() {}
 
-  ngOnInit(): void {}
+  updateCheckBoxData() {
+    this._controls.forEach((option) => {
+      if (option.type === 'check-box') {
+        if (option.dataProvider) {
+          option.dataProvider.data.forEach((opt) => {
+            if (option.dataProvider) {
+              opt.selected = (option.defaultValue as any[]).includes(
+                opt[option.dataProvider?.idField]
+              );
+            }
+          });
+        }
+        this.onCheckBoxChange(option, { target: null }, '');
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.firesoteForm.resetForm = () => {
+      this.updateCheckBoxData();
+    };
+  }
 
   getResponsiveClass(
     prefix: string,
@@ -127,8 +169,59 @@ export class NgFirestoreFormComponent implements OnInit {
     return returnValue;
   }
 
+  onFileChange(control: IFirestoreFormControl, event: Event) {
+    const file: File = (event.target as any).files[0] as File;
+    if (file) {
+      const size = file.size;
+      const formControl = this.firesoteForm?.controls[control.name];
+      if (control.min && size < control.min) {
+        /* prettier-ignore */
+        setTimeout(() => formControl.setErrors({ min: true }), 0);
+      }
+      if (control.max && size > control.max) {
+        /* prettier-ignore */
+        setTimeout(() => formControl.setErrors({ max: true }), 0);
+      }
+    }
+  }
+
+  onCheckBoxChange(
+    control: IFirestoreFormControl,
+    event: { target: any },
+    id: string
+  ) {
+    setTimeout(() => {
+      control.dataProvider?.data.forEach((Option) => {
+        if (control.dataProvider) {
+          if (Option[control.dataProvider.idField] == id) {
+            Option.selected = event.target.checked;
+          }
+        }
+      });
+      if (control.dataProvider && control.dataProvider.data) {
+        const formControl = this.firesoteForm?.controls[control.name];
+        const value = control.dataProvider.data
+          .filter((d) => {
+            return d.selected;
+          })
+          .map((d) => {
+            if (control.dataProvider) {
+              return d[control.dataProvider.idField];
+            } else {
+              return d;
+            }
+          });
+        formControl.setValue(value);
+      }
+    }, 0);
+  }
+
   getErrorMessage(control: IFirestoreFormControl): string | null {
     const formControl = this.firesoteForm?.controls[control.name];
+    /* if (control.type == 'check-box') {
+      console.clear();
+      console.log(formControl);
+    } */
     if (formControl && !formControl.errors && formControl.dirty) {
       if (control.type === 'number' || control.type === 'date') {
         if (control.min && formControl.value < control.min) {
@@ -143,6 +236,18 @@ export class NgFirestoreFormComponent implements OnInit {
           /* prettier-ignore */
           return `<small class="text-danger">${ control?.maxMessage || `<small>${control.label} should less than ${control.max}</small>`}</small>`;
         }
+      }
+      if (
+        control.type === 'radio' &&
+        control.required &&
+        <string>formControl.value.trim().length == ''
+      ) {
+        /* prettier-ignore */
+        setTimeout(() => formControl.setErrors({ required: true }), 0);
+        /* prettier-ignore */
+        return `<small class="text-danger">${ control?.requiredMessage || `<small>${control.label} is Required</small>` }</small>`;
+      }
+      if (control.type === 'check-box') {
       }
     }
     if (formControl && formControl.errors && formControl.dirty) {

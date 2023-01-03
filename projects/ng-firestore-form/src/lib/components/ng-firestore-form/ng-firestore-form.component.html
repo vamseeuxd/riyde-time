@@ -17,7 +17,13 @@
       <!-- prettier-ignore -->
       <ng-container *ngSwitchCase="'select'" [ngTemplateOutlet]="selectControl" [ngTemplateOutletContext]="{ control }"></ng-container>
       <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'radio'" [ngTemplateOutlet]="radioControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'check-box'" [ngTemplateOutlet]="checkBoxControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
       <ng-container *ngSwitchCase="'multi-select'" [ngTemplateOutlet]="multiSelectControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'file'" [ngTemplateOutlet]="fileInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
       <!-- prettier-ignore -->
       <ng-container [ngTemplateOutlet]="validationMessage" [ngTemplateOutletContext]="{ control }"></ng-container>
     </div>
@@ -145,6 +151,53 @@
     </select>
   </ng-template>
 
+  <ng-template #radioControl let-control="control">
+    <div>
+      <ng-container *ngIf="control.dataProvider">
+        <ng-container *ngFor="let option of control.dataProvider.data">
+          <div class="form-check" [class.form-check-inline]="control.isCheckInline">
+            <input
+              class="form-check-input"
+              type="radio"
+              #formControl="ngModel"
+              [ngModel]="control.defaultValue"
+              [value]="option[control.dataProvider.idField]"
+              [name]="control.name"
+              [id]="control.id + '_' + option[control.dataProvider.idField]"
+            />
+            <label class="form-check-label" [for]="control.id + '_' + option[control.dataProvider.idField]">
+              {{ option[control.dataProvider.labelField] }}
+            </label>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-template>
+
+  <ng-template #checkBoxControl let-control="control">
+    <div>
+      <input type="hidden" [name]="control.name" ngModel [id]="control.id">
+      <ng-container *ngIf="control.dataProvider">
+        <ng-container *ngFor="let option of control.dataProvider.data">
+          <div class="form-check" [class.form-check-inline]="control.isCheckInline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              (change)="onCheckBoxChange(control, $event, option[control.dataProvider.idField] )"
+              [value]="option[control.dataProvider.idField]"
+              [checked]="option.selected"
+              [id]="control.id + '_' + option[control.dataProvider.idField]"
+            />
+            <label class="form-check-label" [for]="control.id + '_' + option[control.dataProvider.idField]">
+              {{ option[control.dataProvider.labelField] }}
+            </label>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <!-- <pre>{{control|json}}</pre> -->
+  </ng-template>
+
   <ng-template #multiSelectControl let-control="control">
     <select
       #formControl="ngModel"
@@ -173,6 +226,29 @@
         </option>
       </ng-container>
     </select>
+  </ng-template>
+
+  <ng-template #fileInputControl let-control="control">
+    <input
+      [type]="control.type"
+      #formControl="ngModel"
+      autocomplete="off"
+      [class.text-muted]="control.disabled"
+      [class.is-invalid]="formControl.invalid && formControl.dirty"
+      [class.is-valid]="formControl.valid && formControl.dirty"
+      [disabled]="control.disabled"
+      [required]="control.required"
+      [min]="control.min"
+      [max]="control.max"
+      [accept]="control.accept"
+      (change)="onFileChange(control, $event)"
+      [defaultValue]="control.defaultValue"
+      [ngModel]="control.defaultValue"
+      class="form-control"
+      [name]="control.name"
+      [id]="control.id"
+      [placeholder]="control.placeholder"
+    />
   </ng-template>
 
   <!-- prettier-ignore -->
