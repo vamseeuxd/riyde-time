@@ -6,6 +6,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [NgFirestoreFormComponent],
@@ -14,6 +15,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
     AngularFireAuthModule,
     AngularFireStorageModule,
     AngularFirestoreModule,
+    ImageCropperModule,
     CommonModule,
     FormsModule,
   ],

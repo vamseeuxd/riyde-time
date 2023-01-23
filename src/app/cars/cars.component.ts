@@ -29,8 +29,23 @@ import {
   styleUrls: ['./cars.component.scss'],
 })
 export class CarsComponent {
+  readonly COLUMN = { lg: '', md: '6', sm: '', xl: '', xxl: '' };
+  readonly OFFSET = { lg: '', md: '', sm: '', xl: '', xxl: '' };
+  // prettier-ignore
   controls: IFirestoreFormControl[] = [
-    MOCK_EMAIL,
+    { id: 'title', placeholder: 'Enter Title', label: 'Title', type: 'text', defaultValue: '1122', name: 'title', pattern: '', required: true, disabled: false, hide: false, min: 3, max: 30, offset: this.OFFSET, column: this.COLUMN },
+    { id: 'brand', placeholder: 'Enter Brand', label: 'Brand', type: 'text', defaultValue: '', name: 'brand', pattern: '', required: true, disabled: false, hide: false, min: 3, max: 30, offset: this.OFFSET, column: this.COLUMN },
+    { id: 'model', placeholder: 'Enter Model', label: 'Model', type: 'text', defaultValue: '', name: 'model', pattern: '', required: true, disabled: false, hide: false, min: 3, max: 30, offset: this.OFFSET, column: this.COLUMN },
+    { id: 'type', placeholder: 'Enter Type', label: 'Type', type: 'text', defaultValue: '', name: 'type', pattern: '', required: true, disabled: false, hide: false, min: 3, max: 30, offset: this.OFFSET, column: this.COLUMN },
+    { id: 'noOfSeats', placeholder: 'Enter No Of Seats', label: 'No Of Seats', type: 'number', defaultValue: '', name: 'noOfSeats', pattern: '', required: true, disabled: false, hide: false, min: 3, max: 30, offset: this.OFFSET, column: this.COLUMN },
+    { id: 'registrationNumber', placeholder: 'Enter Registration Number', label: 'Registration Number', type: 'text', defaultValue: '', name: 'registrationNumber', pattern: '', required: true, disabled: false, hide: false, min: 3, max: 30, offset: this.OFFSET, column: this.COLUMN },
+    { id: 'color', placeholder: 'Enter Color', label: 'Color', type: 'color', defaultValue: '#ff0000', name: 'color', pattern: '', required: true, disabled: false, hide: false, min: 3, max: 30, offset: this.OFFSET, column: this.COLUMN },
+    { id: 'rcPhoto', placeholder: 'Upload RC Photo', label: 'RC Photo', type: 'file', defaultValue: '', name: 'rcPhoto', pattern: '', required: true, disabled: false, hide: false, min: 5120, max: 153600, offset: this.OFFSET, column: this.COLUMN },
+    { id: 'polutionPhoto', placeholder: 'Upload Polution Photo', label: 'Polution Photo', type: 'file', defaultValue: '', name: 'polutionPhoto', pattern: '', required: true, disabled: false, hide: false, min: 5120, max: 153600, maxMessage:'File should less than 150KB', offset: this.OFFSET, column: this.COLUMN },
+    { id: 'insurancePhoto', placeholder: 'Upload Insurance Photo', label: 'Insurance Photo', type: 'file', defaultValue: '', name: 'insurancePhoto', pattern: '', required: true, disabled: false, hide: false, min: 5120, max: 153600, maxMessage:'File should less than 150KB', offset: this.OFFSET, column: this.COLUMN },
+    { id: 'chassieNumber', placeholder: 'Enter Chassie Number', label: 'Chassie Number', type: 'text', defaultValue: '', name: 'chassieNumber', pattern: '', required: true, disabled: false, hide: false, min: 3, max: 30, maxMessage:'File should less than 150KB', offset: this.OFFSET, column: this.COLUMN },
+    { id: 'engineNumber', placeholder: 'Enter Engine Number', label: 'Engine Number', type: 'text', defaultValue: '', name: 'engineNumber', pattern: '', required: true, disabled: false, hide: false, min: 3, max: 30, offset: this.OFFSET, column: this.COLUMN },
+    /* MOCK_EMAIL,
     MOCK_TEXT,
     MOCK_NUMBER,
     MOCK_DATE,
@@ -39,7 +54,7 @@ export class CarsComponent {
     MOCK_MULTI_SELECT,
     MOCK_FILE,
     MOCK_RADIO,
-    MOCK_CHECK_BOXES,
+    MOCK_CHECK_BOXES, */
   ];
 
   cars$: Observable<ICar[] | null> = this.service

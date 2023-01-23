@@ -1,23 +1,6 @@
-import {
-  MOCK_EMAIL,
-  MOCK_TEXT,
-  MOCK_NUMBER,
-  MOCK_DATE,
-  MOCK_TEXT_AREA,
-  MOCK_SELECT,
-  MOCK_MULTI_SELECT,
-  MOCK_FILE,
-  MOCK_RADIO,
-  MOCK_CHECK_BOXES,
-} from './mock-controls-config';
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { NgModel, NgForm } from '@angular/forms';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
 
 export interface IOffset {
   sm: string;
@@ -48,6 +31,7 @@ export interface IFirestoreFormControl {
     | 'select'
     | 'multi-select'
     | 'radio'
+    | 'color'
     | 'check-box'
     | 'file';
   defaultValue: string | number | any[] | null;
@@ -94,14 +78,73 @@ export const DEFAULT_COLUMN: IColumn = {
   xxl: '',
 };
 
+export const getFirestoreFormControl = (
+  id: string,
+  label: string,
+  type:
+    | 'email'
+    | 'text'
+    | 'number'
+    | 'date'
+    | 'textarea'
+    | 'select'
+    | 'multi-select'
+    | 'radio'
+    | 'check-box'
+    | 'color'
+    | 'file' = 'text',
+  defaultValue = '',
+  min = 3,
+  max = 10,
+  offset: IOffset = DEFAULT_COLUMN,
+  column: IColumn = DEFAULT_OFFSET
+): IFirestoreFormControl => {
+  return {
+    id,
+    placeholder: label,
+    label: label,
+    type,
+    defaultValue,
+    name: id,
+    pattern: '',
+    required: true,
+    disabled: false,
+    hide: false,
+    min,
+    max,
+    offset: DEFAULT_OFFSET,
+    column: DEFAULT_COLUMN,
+  };
+};
+
 @Component({
   selector: 'ng-firestore-form',
   templateUrl: `./ng-firestore-form.component.html`,
-  styles: [],
+  styles: [
+    `
+      .image-previewer {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        border: 2px solid rgb(220 53 69);
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: flex-start;
+        z-index: 10000;
+      }
+    `,
+  ],
 })
 export class NgFirestoreFormComponent implements AfterViewInit {
   @ViewChild('firesoteForm')
   firesoteForm!: NgForm;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  images: { [key: string]: { event: any; image: any; show?: boolean } } = {};
   private _controls: IFirestoreFormControl[] = [];
   public get controls(): IFirestoreFormControl[] {
     return this._controls;
@@ -109,6 +152,11 @@ export class NgFirestoreFormComponent implements AfterViewInit {
   @Input()
   public set controls(value: IFirestoreFormControl[]) {
     this._controls = value;
+    value.forEach((control) => {
+      if (control.type == 'file') {
+        this.images[control.name] = { event: null, image: null };
+      }
+    });
     this.updateCheckBoxData();
   }
 
@@ -169,8 +217,13 @@ export class NgFirestoreFormComponent implements AfterViewInit {
     return returnValue;
   }
 
-  onFileChange(control: IFirestoreFormControl, event: Event) {
+  onFileChange(
+    control: IFirestoreFormControl,
+    event: Event,
+    controlName: string
+  ) {
     const file: File = (event.target as any).files[0] as File;
+    this.images[controlName].event = event;
     if (file) {
       const size = file.size;
       const formControl = this.firesoteForm?.controls[control.name];
@@ -183,6 +236,19 @@ export class NgFirestoreFormComponent implements AfterViewInit {
         setTimeout(() => formControl.setErrors({ max: true }), 0);
       }
     }
+  }
+
+  imageCropped(event: ImageCroppedEvent, controlName: string) {
+    this.images[controlName].image = event.base64;
+  }
+  imageLoaded(image: LoadedImage | null = null) {
+    // show cropper
+  }
+  cropperReady() {
+    // cropper ready
+  }
+  loadImageFailed() {
+    // show message
   }
 
   onCheckBoxChange(
@@ -282,6 +348,12 @@ export class NgFirestoreFormComponent implements AfterViewInit {
       }
     }
     return null;
+  }
+
+  resetForm() {
+    debugger;
+    // this.firesoteForm.reset();
+    this.firesoteForm.resetForm(this.defaultValues);
   }
 
   getNumberErrorMessage() {}

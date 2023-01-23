@@ -6,7 +6,7 @@
     "start": "ng serve --host 0.0.0.0",
     "build": "ng build --configuration development",
     "deploy": "firebase deploy",
-    "module": "ng g m cars --route cars --module app ",
+    "module": "ng g m bookings --route bookings --module app ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -29,6 +29,7 @@
     "firebase": "^9.9.1",
     "fontawesome-4.7": "^4.7.0",
     "ngx-bootstrap": "^6.2.0",
+    "ngx-image-cropper": "^6.3.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

@@ -1,4 +1,4 @@
-<form class="row pt-2" #firesoteForm="ngForm">
+<form class="row" #firesoteForm="ngForm">
   <ng-container *ngFor="let control of controls" [ngSwitch]="control.type">
     <!-- prettier-ignore -->
     <div *ngIf="!control.hide" [class]=" getResponsiveClass('col', control.column) + ' ' + getResponsiveClass('offset', control.offset)">
@@ -10,6 +10,8 @@
       <ng-container *ngSwitchCase="'text'" [ngTemplateOutlet]="textInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
       <!-- prettier-ignore -->
       <ng-container *ngSwitchCase="'number'" [ngTemplateOutlet]="numberInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <!-- prettier-ignore -->
+      <ng-container *ngSwitchCase="'color'" [ngTemplateOutlet]="numberInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
       <!-- prettier-ignore -->
       <ng-container *ngSwitchCase="'date'" [ngTemplateOutlet]="numberInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
       <!-- prettier-ignore -->
@@ -28,10 +30,10 @@
       <ng-container [ngTemplateOutlet]="validationMessage" [ngTemplateOutletContext]="{ control }"></ng-container>
     </div>
   </ng-container>
-  <div class="col-12">
-    <!-- prettier-ignore -->
+  <!-- prettier-ignore -->
+  <!-- <div class="col-12">
     <button type="button" (click)="firesoteForm.resetForm(defaultValues)" class="btn btn-dark">Reset</button>
-  </div>
+  </div> -->
 
   <ng-template #emaiControl let-control="control">
     <input
@@ -155,7 +157,10 @@
     <div>
       <ng-container *ngIf="control.dataProvider">
         <ng-container *ngFor="let option of control.dataProvider.data">
-          <div class="form-check" [class.form-check-inline]="control.isCheckInline">
+          <div
+            class="form-check"
+            [class.form-check-inline]="control.isCheckInline"
+          >
             <input
               class="form-check-input"
               type="radio"
@@ -165,7 +170,10 @@
               [name]="control.name"
               [id]="control.id + '_' + option[control.dataProvider.idField]"
             />
-            <label class="form-check-label" [for]="control.id + '_' + option[control.dataProvider.idField]">
+            <label
+              class="form-check-label"
+              [for]="control.id + '_' + option[control.dataProvider.idField]"
+            >
               {{ option[control.dataProvider.labelField] }}
             </label>
           </div>
@@ -176,19 +184,37 @@
 
   <ng-template #checkBoxControl let-control="control">
     <div>
-      <input type="hidden" [name]="control.name" ngModel [id]="control.id">
+      <input
+        type="hidden"
+        [name]="control.name"
+        [required]="control.required"
+        ngModel
+        [id]="control.id"
+      />
       <ng-container *ngIf="control.dataProvider">
         <ng-container *ngFor="let option of control.dataProvider.data">
-          <div class="form-check" [class.form-check-inline]="control.isCheckInline">
+          <div
+            class="form-check"
+            [class.form-check-inline]="control.isCheckInline"
+          >
             <input
               class="form-check-input"
               type="checkbox"
-              (change)="onCheckBoxChange(control, $event, option[control.dataProvider.idField] )"
+              (change)="
+                onCheckBoxChange(
+                  control,
+                  $event,
+                  option[control.dataProvider.idField]
+                )
+              "
               [value]="option[control.dataProvider.idField]"
               [checked]="option.selected"
               [id]="control.id + '_' + option[control.dataProvider.idField]"
             />
-            <label class="form-check-label" [for]="control.id + '_' + option[control.dataProvider.idField]">
+            <label
+              class="form-check-label"
+              [for]="control.id + '_' + option[control.dataProvider.idField]"
+            >
               {{ option[control.dataProvider.labelField] }}
             </label>
           </div>
@@ -229,26 +255,61 @@
   </ng-template>
 
   <ng-template #fileInputControl let-control="control">
-    <input
-      [type]="control.type"
-      #formControl="ngModel"
-      autocomplete="off"
-      [class.text-muted]="control.disabled"
-      [class.is-invalid]="formControl.invalid && formControl.dirty"
-      [class.is-valid]="formControl.valid && formControl.dirty"
-      [disabled]="control.disabled"
-      [required]="control.required"
-      [min]="control.min"
-      [max]="control.max"
-      [accept]="control.accept"
-      (change)="onFileChange(control, $event)"
-      [defaultValue]="control.defaultValue"
-      [ngModel]="control.defaultValue"
-      class="form-control"
-      [name]="control.name"
-      [id]="control.id"
-      [placeholder]="control.placeholder"
-    />
+    <div class="input-group">
+      <input
+        [type]="control.type"
+        #formControl="ngModel"
+        autocomplete="off"
+        [class.text-muted]="control.disabled"
+        [class.is-invalid]="formControl.invalid && formControl.dirty"
+        [class.is-valid]="formControl.valid && formControl.dirty"
+        [disabled]="control.disabled"
+        [required]="control.required"
+        [min]="control.min"
+        [max]="control.max"
+        [accept]="control.accept"
+        (change)="onFileChange(control, $event, control.name)"
+        [defaultValue]="control.defaultValue"
+        [ngModel]="control.defaultValue"
+        class="form-control"
+        [name]="control.name"
+        [id]="control.id"
+        [placeholder]="control.placeholder"
+      />
+      <button class="btn btn-outline-secondary" (click)="images[control.name].show = true">
+        Edit
+      </button>
+    </div>
+    <div class="image-previewer" *ngIf="images[control.name]?.show">
+      <div class="card shadow mt-3">
+        <div class="card-body">
+          <h6 class="card-title m-0 p-0">{{ control.label }} Image Cropper</h6>
+          <div style="width: 300px; height: 300px">
+            <image-cropper
+              [imageChangedEvent]="images[control.name].event"
+              [maintainAspectRatio]="false"
+              format="png"
+              (imageCropped)="imageCropped($event, control.name)"
+              (imageLoaded)="imageLoaded()"
+              (cropperReady)="cropperReady()"
+              (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+          </div>
+          <div class="d-flex mt-2">
+            <button
+              type="button"
+              (click)="images[control.name].show = false"
+              class="w-50 btn btn-dark me-1 btn-sm"
+            >
+              Cancel
+            </button>
+            <button class="w-50 btn btn-danger ms-1 btn-sm">Ok</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- <img [src]="images[control.name].image" /> -->
+    </div>
   </ng-template>
 
   <!-- prettier-ignore -->
@@ -264,4 +325,4 @@
 </ng-template>
 </form>
 
-<pre>{{ firesoteForm.value | json }}</pre>
+<!-- <pre>{{ firesoteForm.value | json }}</pre> -->

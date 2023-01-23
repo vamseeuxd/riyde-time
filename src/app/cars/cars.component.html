@@ -1,15 +1,8 @@
-<!-- <div class="row">
+<div class="row">
   <div class="col-md-12 offset-md-0 col-sm-12 offset-sm-0">
-
     <h4 class="text-muted mt-2 mb-3 border-bottom pb-2 d-flex">
       Manage Cars
-      <button (click)="
-          showEditModal(
-            getNewCar(),
-            editCarModal,
-            false
-          )
-        " class="btn btn-outline-danger btn-sm shadow-sm ms-auto">
+      <button (click)="showEditModal( getNewCar(), editCarModal, false)" class="btn btn-outline-danger btn-sm shadow-sm ms-auto">
         <i class="fa fa-plus me-1"></i> Add New Car
       </button>
     </h4>
@@ -58,7 +51,25 @@
           <i class="fa fa-times"></i>
         </button>
       </div>
-      <form #carForm="ngForm" class="modal-body">
+      <div class="modal-body pt-1">
+        <ng-firestore-form #form [controls]="controls"></ng-firestore-form>
+
+        <div class="d-flex" *ngIf="!!form?.firesoteForm">
+          <button type="button" (click)="form.resetForm()" class="w-50 btn btn-dark me-1">Reset</button>
+          <button (click)="saveEdit(editCarModal)" [disabled]="form?.firesoteForm?.invalid" class="w-50 btn btn-danger ms-1">Save</button>
+        </div>
+
+        <!-- <pre>{{ form?.firesoteForm?.value | json }}</pre> -->
+        <!--
+          <pre>{{ form?.defaultValues | json }}</pre>
+          <pre>{{ form?.firesoteForm?.invalid | json }}</pre>
+        -->
+
+        <!-- <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadProgress | async) + '%'" [attr.aria-valuenow]="(uploadProgress | async)" aria-valuemin="0" aria-valuemax="100"></div>
+        </div> -->
+      </div>
+<!--       <form #carForm="ngForm" class="modal-body">
         <div class="row">
           <div class="col-md-6 mb-3"> <label class="form-label">Title</label>               <input required minlength="3" type="text" name="title" #title [(ngModel)]="editCar.title" class="form-control" placeholder="Enter Car Title" /> </div>
           <div class="col-md-6 mb-3"> <label class="form-label">Brand</label>               <input type="text" name="brand" #brand [(ngModel)]="editCar.brand" class="form-control" placeholder="Enter Car Brand" /> </div>
@@ -74,6 +85,8 @@
           <div class="col-md-6 mb-3"> <label class="form-label">Engine Number</label>       <input type="text" name="engineNumber" #engineNumber [(ngModel)]="editCar.engineNumber" class="form-control" placeholder="Enter Car Engine Number" /> </div>
         </div>
 
+        <ng-firestore-form [controls]="controls"></ng-firestore-form>
+
         <div class="d-flex">
           <button (click)="saveEdit(editCarModal)" [disabled]="carForm.invalid" class="btn btn-outline-danger btn-sm ms-auto">Save</button>
         </div>
@@ -81,7 +94,7 @@
         <div class="progress">
             <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width]="(uploadProgress | async) + '%'" [attr.aria-valuenow]="(uploadProgress | async)" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-      </form>
+      </form> -->
     </div>
   </div>
 </div>
@@ -92,6 +105,5 @@
     Show...
   </h5>
 </ng-template>
- -->
 
- <ng-firestore-form [controls]="controls"></ng-firestore-form>
+

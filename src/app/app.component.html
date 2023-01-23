@@ -26,13 +26,13 @@
       <div class="offcanvas-body">
         <ul class="list-group">
           <!-- prettier-ignore -->
-          <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-file me-2"></i>Menu-1</a>
+          <a role="button" routerLink="cars" routerLinkActive="bg-danger text-white" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="fa fa-file me-2"></i>Manage Cars</a>
           <!-- prettier-ignore -->
-          <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-file me-2"></i>Menu-2</a>
+          <a role="button" routerLink="drivers" routerLinkActive="bg-danger text-white" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="fa fa-file me-2"></i>Manage Drivers</a>
           <!-- prettier-ignore -->
-          <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-file me-2"></i>Menu-3</a>
+          <a role="button" routerLink="passengers" routerLinkActive="bg-danger text-white" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="fa fa-file me-2"></i>Manage Passengers</a>
           <!-- prettier-ignore -->
-          <a role="button" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="text-danger fa fa-file me-2"></i>Menu-4</a>
+          <a role="button" routerLink="bookings" routerLinkActive="bg-danger text-white" (click)="offcanvas.dismiss('Cross click')" class="list-group-item list-group-item-action"><i class="fa fa-file me-2"></i>Manage Booking</a>
         </ul>
         <!-- <pre>{{user|json}}</pre> -->
       </div>
