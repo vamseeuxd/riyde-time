@@ -169,7 +169,7 @@ export const MOCK_FILE: IFirestoreFormControl = {
   id: 'profilePicture',
   placeholder: 'Profile Picture',
   label: 'Profile Picture',
-  type: 'file',
+  type: 'image',
   defaultValue: null,
   accept: '.pdf',
   name: 'profilePicture',

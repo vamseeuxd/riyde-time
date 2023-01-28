@@ -25,7 +25,7 @@
       <!-- prettier-ignore -->
       <ng-container *ngSwitchCase="'multi-select'" [ngTemplateOutlet]="multiSelectControl" [ngTemplateOutletContext]="{ control }"></ng-container>
       <!-- prettier-ignore -->
-      <ng-container *ngSwitchCase="'file'" [ngTemplateOutlet]="fileInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
+      <ng-container *ngSwitchCase="'image'" [ngTemplateOutlet]="imageInputControl" [ngTemplateOutletContext]="{ control }"></ng-container>
       <!-- prettier-ignore -->
       <ng-container [ngTemplateOutlet]="validationMessage" [ngTemplateOutletContext]="{ control }"></ng-container>
     </div>
@@ -254,11 +254,17 @@
     </select>
   </ng-template>
 
-  <ng-template #fileInputControl let-control="control">
+  <ng-template #imageInputControl let-control="control">
     <div class="input-group">
       <input
-        [type]="control.type"
+        type="hidden"
+        [name]="control.name"
         #formControl="ngModel"
+        [ngModel]="control.defaultValue"
+        [defaultValue]="control.defaultValue"
+      />
+      <input
+        type="file"
         autocomplete="off"
         [class.text-muted]="control.disabled"
         [class.is-invalid]="formControl.invalid && formControl.dirty"
@@ -268,26 +274,38 @@
         [min]="control.min"
         [max]="control.max"
         [accept]="control.accept"
-        (change)="onFileChange(control, $event, control.name)"
-        [defaultValue]="control.defaultValue"
-        [ngModel]="control.defaultValue"
+        (change)="onFileChange(control, $event, control.name, control.image)"
         class="form-control"
-        [name]="control.name"
         [id]="control.id"
         [placeholder]="control.placeholder"
       />
-      <button class="btn btn-outline-secondary" (click)="images[control.name].show = true">
+      <button
+        class="btn btn-outline-secondary"
+        *ngIf="control.image"
+        (click)="images[control.name].show = true"
+      >
         Edit
       </button>
     </div>
     <div class="image-previewer" *ngIf="images[control.name]?.show">
       <div class="card shadow mt-3">
         <div class="card-body">
-          <h6 class="card-title m-0 p-0">{{ control.label }} Image Cropper</h6>
-          <div style="width: 300px; height: 300px">
+          <h6 class="card-title m-0 p-0 pb-2 text-center">
+            <code>{{ control.label }}</code> Image Cropper
+          </h6>
+          <div style="width: 300px">
+            <img
+              [src]="images[control.name].image"
+              style="width: 300px; height: 189px; object-fit: cover"
+            />
             <image-cropper
-              [imageChangedEvent]="images[control.name].event"
-              [maintainAspectRatio]="false"
+              [imageBase64]="images[control.name].imageBase64"
+              style="max-height: 230px;"
+              [maintainAspectRatio]="true"
+              [allowMoveImage]="true"
+              [resizeToWidth]="300"
+              [resizeToHeight]="189"
+              [aspectRatio]="1 / 0.63"
               format="png"
               (imageCropped)="imageCropped($event, control.name)"
               (imageLoaded)="imageLoaded()"
@@ -297,18 +315,17 @@
           </div>
           <div class="d-flex mt-2">
             <button
-              type="button"
-              (click)="images[control.name].show = false"
-              class="w-50 btn btn-dark me-1 btn-sm"
+              (click)="
+                images[control.name].show = false;
+                this.images[control.name].open = false
+              "
+              class="w-100 btn btn-danger ms-1 btn-sm"
             >
-              Cancel
+              Ok
             </button>
-            <button class="w-50 btn btn-danger ms-1 btn-sm">Ok</button>
           </div>
         </div>
       </div>
-
-      <!-- <img [src]="images[control.name].image" /> -->
     </div>
   </ng-template>
 

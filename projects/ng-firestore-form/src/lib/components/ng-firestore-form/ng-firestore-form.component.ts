@@ -33,13 +33,14 @@ export interface IFirestoreFormControl {
     | 'radio'
     | 'color'
     | 'check-box'
-    | 'file';
+    | 'image';
   defaultValue: string | number | any[] | null;
   name: string;
   accept?: string;
   isCheckInline?: boolean;
   hide: boolean;
   disabled: boolean;
+  image?: boolean;
   min?: number | string;
   minMessage?: string;
   max?: number | string;
@@ -92,7 +93,7 @@ export const getFirestoreFormControl = (
     | 'radio'
     | 'check-box'
     | 'color'
-    | 'file' = 'text',
+    | 'image' = 'text',
   defaultValue = '',
   min = 3,
   max = 10,
@@ -144,7 +145,15 @@ export class NgFirestoreFormComponent implements AfterViewInit {
   firesoteForm!: NgForm;
   imageChangedEvent: any = '';
   croppedImage: any = '';
-  images: { [key: string]: { event: any; image: any; show?: boolean } } = {};
+  images: {
+    [key: string]: {
+      imageBase64: string;
+      event: any;
+      image: any;
+      show?: boolean;
+      open?: boolean;
+    };
+  } = {};
   private _controls: IFirestoreFormControl[] = [];
   public get controls(): IFirestoreFormControl[] {
     return this._controls;
@@ -153,8 +162,12 @@ export class NgFirestoreFormComponent implements AfterViewInit {
   public set controls(value: IFirestoreFormControl[]) {
     this._controls = value;
     value.forEach((control) => {
-      if (control.type == 'file') {
-        this.images[control.name] = { event: null, image: null };
+      if (control.type == 'image' && control.image) {
+        this.images[control.name] = {
+          event: null,
+          image: null,
+          imageBase64: '',
+        };
       }
     });
     this.updateCheckBoxData();
@@ -220,10 +233,22 @@ export class NgFirestoreFormComponent implements AfterViewInit {
   onFileChange(
     control: IFirestoreFormControl,
     event: Event,
-    controlName: string
+    controlName: string,
+    isImage: boolean
   ) {
     const file: File = (event.target as any).files[0] as File;
-    this.images[controlName].event = event;
+    if (isImage) {
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        if (reader.result) {
+          this.images[controlName].open = true;
+          this.images[controlName].imageBase64 = reader.result as string;
+          this.images[controlName].event = event;
+          this.images[controlName].show = true;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
     if (file) {
       const size = file.size;
       const formControl = this.firesoteForm?.controls[control.name];
@@ -239,7 +264,12 @@ export class NgFirestoreFormComponent implements AfterViewInit {
   }
 
   imageCropped(event: ImageCroppedEvent, controlName: string) {
-    this.images[controlName].image = event.base64;
+    if (this.images[controlName].open) {
+      this.images[controlName].image = event.base64;
+      const formControl = this.firesoteForm?.controls[controlName];
+      formControl.setValue(event.base64);
+    }
+    this.images[controlName].open = true;
   }
   imageLoaded(image: LoadedImage | null = null) {
     // show cropper
