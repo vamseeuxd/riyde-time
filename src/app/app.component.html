@@ -20,8 +20,8 @@
           aria-label="Close"
           (click)="offcanvas.dismiss('Cross click')"
         >
-        <i class="fa fa-close text-white" style="font-size: 20px;"></i>
-      </button>
+          <i class="fa fa-close text-white" style="font-size: 20px"></i>
+        </button>
       </div>
       <div class="offcanvas-body">
         <ul class="list-group">
@@ -40,7 +40,13 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       <a class="navbar-brand">
         <span class="text-white fw-bold">
-          <i (click)="offcanvasService.open(mainMenuContent, { position: 'start' })" class="fa fa-bars text-white me-3" role="button"></i>
+          <i
+            (click)="
+              offcanvasService.open(mainMenuContent, { position: 'start' })
+            "
+            class="fa fa-bars text-white me-3"
+            role="button"
+          ></i>
           <span class="text-dark">RIYDE</span>
           <span class="text-light ms-2">TIME</span>
         </span>
@@ -152,8 +158,12 @@
   <!-- <div class="spinner-border text-info" role="status">
     <span class="visually-hidden">Loading...</span>
   </div> -->
-  <img src="../assets/loading.gif" style="width: 175px" />
-  <span class="text-white">Please wait...</span>
+  <div
+    class="d-flex flex-column align-items-center justify-content-center bg-white rounded shadow"
+  >
+    <img src="../assets/loading.gif" style="width: 175px; margin-top: -30px" />
+    <span class="text-dark pb-2">Please wait...</span>
+  </div>
 </div>
 
 <ng-template #showLogin>
