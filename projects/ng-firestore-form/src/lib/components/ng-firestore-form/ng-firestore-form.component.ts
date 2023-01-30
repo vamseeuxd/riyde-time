@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
+import { debounceTime } from 'rxjs';
 
 export interface IOffset {
   sm: string;
@@ -53,6 +54,9 @@ export interface IFirestoreFormControl {
   emailMessage?: string;
   rows?: number;
   cols?: number;
+  imageWidth?: number;
+  imageHeight?: number;
+  aspectRatio?: number;
   resize?: 'both' | 'horizontal' | 'vertical' | 'none';
   offset: IOffset;
   column: IColumn;
@@ -155,6 +159,7 @@ export class NgFirestoreFormComponent implements AfterViewInit {
     };
   } = {};
   private _controls: IFirestoreFormControl[] = [];
+  private _invalid = true;
   public get controls(): IFirestoreFormControl[] {
     return this._controls;
   }
@@ -163,6 +168,12 @@ export class NgFirestoreFormComponent implements AfterViewInit {
     this._controls = value;
     value.forEach((control) => {
       if (control.type == 'image' && control.image) {
+        if(!control.imageHeight){
+          control.imageHeight = 189;
+        }
+        if(!control.imageWidth){
+          control.imageWidth = 300;
+        }
         this.images[control.name] = {
           event: null,
           image: null,
@@ -192,7 +203,16 @@ export class NgFirestoreFormComponent implements AfterViewInit {
     });
   }
 
+  get invalid(): boolean {
+    return this._invalid;
+  }
+
   ngAfterViewInit(): void {
+    if (this.firesoteForm && this.firesoteForm.valueChanges) {
+      this.firesoteForm.valueChanges.pipe(debounceTime(1000)).subscribe((val) => {
+        this._invalid = !!this.firesoteForm.invalid;
+      });
+    }
     this.firesoteForm.resetForm = () => {
       this.updateCheckBoxData();
     };
@@ -314,10 +334,6 @@ export class NgFirestoreFormComponent implements AfterViewInit {
 
   getErrorMessage(control: IFirestoreFormControl): string | null {
     const formControl = this.firesoteForm?.controls[control.name];
-    /* if (control.type == 'check-box') {
-      console.clear();
-      console.log(formControl);
-    } */
     if (formControl && !formControl.errors && formControl.dirty) {
       if (control.type === 'number' || control.type === 'date') {
         if (control.min && formControl.value < control.min) {
@@ -381,7 +397,6 @@ export class NgFirestoreFormComponent implements AfterViewInit {
   }
 
   resetForm() {
-    debugger;
     // this.firesoteForm.reset();
     this.firesoteForm.resetForm(this.defaultValues);
   }

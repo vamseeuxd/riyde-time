@@ -293,19 +293,21 @@
           <h6 class="card-title m-0 p-0 pb-2 text-center">
             <code>{{ control.label }}</code> Image Cropper
           </h6>
-          <div style="width: 300px">
+          <div [style.width.px]="control.imageWidth">
             <img
               [src]="images[control.name].image"
-              style="width: 300px; height: 189px; object-fit: cover"
+              [style.width.px]="control.imageWidth"
+              [style.height.px]="control.imageHeight"
+              style="object-fit: cover"
             />
             <image-cropper
               [imageBase64]="images[control.name].imageBase64"
-              style="max-height: 230px;"
+              style="max-height: 230px"
               [maintainAspectRatio]="true"
               [allowMoveImage]="true"
-              [resizeToWidth]="300"
-              [resizeToHeight]="189"
-              [aspectRatio]="1 / 0.63"
+              [resizeToWidth]="control.imageWidth"
+              [resizeToHeight]="control.imageHeight"
+              [aspectRatio]="control.imageWidth / control.imageHeight"
               format="png"
               (imageCropped)="imageCropped($event, control.name)"
               (imageLoaded)="imageLoaded()"
